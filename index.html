@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>财富天赋罗盘</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -106,6 +107,40 @@
             font-size: 1em;
             font-weight: bold;
             cursor: pointer;
+        }
+        #result h1, #result h2, #result h3 {
+            color: #FACC15;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            font-weight: bold;
+        }
+        #result h1 {
+            font-size: 1.5rem;
+            text-align: center;
+        }
+        #result h2 {
+            font-size: 1.25rem;
+            border-bottom: 1px solid #333;
+            padding-bottom: 0.3em;
+        }
+        #result ul {
+            list-style-type: disc;
+            padding-left: 1.5em;
+            margin-bottom: 1em;
+        }
+        #result li {
+            line-height: 1.8;
+            margin-bottom: 0.5em;
+            color: #E5E7EB;
+        }
+        #result strong {
+            color: #FFF;
+            font-weight: 600;
+        }
+        #result p {
+            line-height: 1.6;
+            margin-bottom: 1em;
+            color: #D1D5DB;
         }
     </style>
 </head>
@@ -239,9 +274,10 @@
                 // 创建结果容器
                 const resultContainer = document.createElement('div');
                 resultContainer.className = 'result-container';
+                resultContainer.id = 'result';
                 
-                // 直接显示原始 Markdown
-                resultContainer.textContent = markdown;
+                // 使用marked解析Markdown
+                resultContainer.innerHTML = marked.parse(markdown);
                 
                 // 添加返回按钮
                 const backButton = document.createElement('button');
