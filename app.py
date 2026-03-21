@@ -187,7 +187,8 @@ def generate_report():
     
     # 调用 build_report 函数生成报告并直接返回 HTML 内容
     html_content = maya_kin.build_report(date_str)
-    return html_content
+    from flask import Response
+    return Response(html_content, mimetype='text/html')
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=5002, threaded=True, use_reloader=False)
