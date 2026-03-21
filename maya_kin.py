@@ -160,6 +160,64 @@ def build_report(date_str):
     details = get_kin_details(date_str)
     kin_number = details.get('kin', 0)
     
+    # 计算图腾名称
+    kin_info = get_kin_by_date(*map(int, date_str.split('-')))
+    kin_name = kin_info['name']
+    
+    # 调用 AI 生成报告内容
+    ai_content = generate_report(kin_name)
+    
+    # 如果 AI 不可用，使用保底内容
+    if "API 不可用" in ai_content or "生成失败" in ai_content:
+        # 使用硬编码的保底内容
+        ai_content = f"""
+# 艺序 · 财富天赋罗盘 v1.0
+*"看透你的商业基因，找到最不费力的搞钱姿势。"*
+**你的专属印记：KIN {kin_number} | {kin_name}**
+
+## 🌌 五大财富能量阵
+* 主图腾：红龙🐉 - 你是天生的破局者，能在废墟中建起高楼
+* 指引图腾：白风💨 - 你的直觉敏锐，能洞察人心，善于沟通
+* 支持图腾：黄种子🌱 - 你拥有强大的成长潜力，善于培育和滋养
+* 挑战图腾：蓝夜🌙 - 你需要克服内心的恐惧，勇敢面对未知
+* 隐藏图腾：红蛇🐍 - 你拥有强大的生命力和转化能力
+
+## 🧬 【核心商业基因解码】
+* 💰 **你的搞钱超能力：** 你最大的杠杆不是勤奋，而是你对趋势近乎变态的直觉。别人还在观望，你已经闻到了钱的味道。
+* 🪫 **你最致命的漏财点：** 太重感情、不懂拒绝。你总是免费给人做军师，把自己的核心价值当成了人情大甩卖！
+
+## 🚫 【绝不可碰的商业红线】
+* 🧨 **红线1：重资产项目** - 不要碰需要极强 SOP 和死磕细节的苦力活，你的能量在创意，不在当监工。
+* 🧨 **红线2：无效社交** - 停止参加没有明确商业价值的线下活动和会议，你的时间应该花在高价值连接上。
+* 🧨 **红线3：低价值客户** - 拒绝服务那些只关注价格、不尊重专业价值的客户，你的价值值得被尊重。
+
+## 🤝 【天作之合与避坑合伙人】
+* 👑 **你的命中贵人（合伙人特质）：** 你需要一个像'黄战士'一样没有感情的执行机器，来帮你把满脑子的点子落地。
+* 🧛 **吸血鬼合伙人（绝对避开）：** 远离那些只会给你画大饼、消耗你情绪价值的"寄生虫"。
+
+## 🚀 【顺势而为的 13 天破局行动】
+* **Day 1-3 能量蓄水：** 断舍离。删掉微信里3个只会索取能量的人，清理物理桌面。
+* **Day 4-7 杠杆显化：** 把你脑子里想了半个月的那个点子，发一条不加滤镜的朋友圈，测试谁愿意为你买单。
+* **Day 8-13 闭环收割：** 拒绝一次免费白嫖的请求，报出你的真实价格。
+
+## 🌟 创始人寄语
+亲爱的朋友，
+财富不是拼命追逐来的，而是你的能量场调频到正确频段后，自然吸引来的。
+这个罗盘不是为了给你设限，而是帮你找到那条**阻力最小、最顺应天命的搞钱之路**。去发挥你的天赋，把那些不擅长的事情果断外包！
+
+—— 艺序创始人
+AI 避坑实战导师
+*(截图保存你的专属罗盘，带着它去开启你的财富主场！)*
+"""
+    
+    # 将 AI 生成的内容转换为 HTML 格式
+    ai_html = ai_content.replace('\n', '<br>').replace('**', '<strong>').replace('*', '• ')
+    
+    # 提取各个部分
+    title_part = ai_html.split('## 🌌 五大财富能量阵')[0].replace('# ', '').replace('**', '').strip()
+    totem_part = ai_html.split('## 🌌 五大财富能量阵')[1].split('## 🧬 【核心商业基因解码】')[0].replace('*', '').strip()
+    content_part = ai_html.split('## 🧬 【核心商业基因解码】')[1].strip()
+    
     # 将所有需要用到的名字和Key提前计算好
     glyph_name = "红龙"  # 简化处理，实际应该从映射表中获取
     tone_name = "磁性"  # 简化处理，实际应该从映射表中获取
@@ -401,38 +459,14 @@ def build_report(date_str):
     </div>
     <div class="container">
     <div class="energy-overview">
-        <h1>KIN """ + str(kin_number) + """ | """ + tone_name + """的""" + glyph_name + """
+        <h1>""" + ai_html.split('\n')[0].replace('# ', '').replace('**', '') + """
     </div>
     
     <!-- 五大力量图腾占位符 -->
     <div class="totem-placeholder">
         <h3>🌌 五大力量图腾</h3>
         <div class="totem-grid">
-            <div class="totem-item">
-                <h4>主图腾</h4>
-                <p>""" + glyph_name + """
-                <p>【待添加玛雅原版图标】</p>
-            </div>
-            <div class="totem-item">
-                <h4>指引图腾</h4>
-                <p>""" + guide_name + """
-                <p>【待添加玛雅原版图标】</p>
-            </div>
-            <div class="totem-item">
-                <h4>支持图腾</h4>
-                <p>""" + support_name + """
-                <p>【待添加玛雅原版图标】</p>
-            </div>
-            <div class="totem-item">
-                <h4>挑战图腾</h4>
-                <p>""" + challenge_name + """
-                <p>【待添加玛雅原版图标】</p>
-            </div>
-            <div class="totem-item">
-                <h4>隐藏图腾</h4>
-                <p>""" + hidden_name + """
-                <p>【待添加玛雅原版图标】</p>
-            </div>
+            """ + ai_html.split('## 🌌 五大财富能量阵')[1].split('## 🧬 【核心商业基因解码】')[0].replace('*', '').strip() + """
         </div>
     </div>
     
@@ -452,51 +486,7 @@ def build_report(date_str):
     <div class="section">
         <h2>【商业基因】</h2>
         <div class="content-text">
-            <ul>
-                <li><strong>财富增长模型：</strong>轻资产+高毛利+可复制，通过知识变现和个人品牌构建实现指数增长</li>
-                <li><strong>核心竞争力：</strong>独特的商业直觉和执行力，擅长在混乱中发现机会并快速验证</li>
-                <li><strong>最佳定位：</strong>成为细分领域的意见领袖，通过内容输出和咨询服务建立权威</li>
-            </ul>
-        </div>
-    </div>
-    
-    <!-- 避坑红线板块 -->
-    <div class="section">
-        <h2>【避坑红线】</h2>
-        <div class="content-text">
-            <ul>
-                <li><strong>红线1：重资产项目</strong> - 绝对不能碰需要大额前期投入、长周期回报的项目</li>
-                <li><strong>红线2：无效社交</strong> - 停止参加没有明确商业价值的线下活动和会议</li>
-                <li><strong>红线3：低价值客户</strong> - 拒绝服务那些只关注价格、不尊重专业价值的客户</li>
-            </ul>
-        </div>
-    </div>
-    
-    <!-- 合伙人尾数板块 -->
-    <div class="section">
-        <h2>【合伙人尾数】</h2>
-        <div class="content-text">
-            <ul>
-                <li><strong>最佳尾数：</strong>4（黄种子）、8（黄星星）、12（黄人），这些数字代表系统化和执行能力</li>
-                <li><strong>互补特质：</strong>你负责战略和创意，合伙人负责系统搭建和运营执行</li>
-                <li><strong>权力边界：</strong>决策权重60/40，财务透明，每月定期审计</li>
-            </ul>
-        </div>
-    </div>
-    
-    <!-- 13天SOP板块 -->
-    <div class="section">
-        <h2>【13天 SOP】</h2>
-        <div class="content-text">
-            <ul>
-                <li><strong>Day 1：</strong>盘点个人核心能力，列出3个可变现的技能</li>
-                <li><strong>Day 2-3：</strong>设计最小可行性产品(MVP)，聚焦一个核心痛点</li>
-                <li><strong>Day 4-5：</strong>建立个人品牌视觉系统，包括Logo和个人形象</li>
-                <li><strong>Day 6-7：</strong>创建3-5个高质量内容，定位目标客户群体</li>
-                <li><strong>Day 8-9：</strong>寻找3个种子用户，免费提供服务换取反馈</li>
-                <li><strong>Day 10-11：</strong>根据反馈迭代产品，调整定价策略</li>
-                <li><strong>Day 12-13：</strong>制定销售漏斗，准备正式发售</li>
-            </ul>
+            """ + ai_html + """
         </div>
     </div>
     
