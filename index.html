@@ -199,7 +199,7 @@
         const yearSelect = document.getElementById('year');
         const currentYear = new Date().getFullYear();
         
-        for (let i = currentYear; i >= currentYear - 20; i--) {
+        for (let i = currentYear; i >= 1950; i--) {
             const option = document.createElement('option');
             option.value = i;
             option.textContent = i;
