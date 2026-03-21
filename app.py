@@ -30,6 +30,34 @@ def index():
     
     with open(INDEX_HTML_PATH, 'r', encoding='utf-8') as f:
         return f.read()
+print(f'当前运行目录是: {os.getcwd()}')
+app = Flask(__name__)
+
+# 获取当前文件所在目录的绝对路径
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+INDEX_HTML_PATH = os.path.join(BASE_DIR, 'index.html')
+
+try:
+    # 检查 index.html 是否存在
+    if not os.path.exists(INDEX_HTML_PATH):
+        print(f"警告: 找不到 {INDEX_HTML_PATH}")
+        print("请确保 index.html 确实在项目根目录下\n")
+    
+    
+    print(f"\n--- 公网访问链接: {public_url} ---")
+    print("复制以上链接发送给客户\n")
+except Exception as e:
+    
+    print("请确保网络连接正常\n")
+
+@app.route('/')
+def index():
+    # 使用绝对路径读取 index.html
+    if not os.path.exists(INDEX_HTML_PATH):
+        return f"错误: 找不到 index.html 文件，请确保文件存在于: {BASE_DIR}", 500
+    
+    with open(INDEX_HTML_PATH, 'r', encoding='utf-8') as f:
+        return f.read()
 
 try:
     
