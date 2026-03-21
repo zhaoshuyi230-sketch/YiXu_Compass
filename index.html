@@ -446,13 +446,6 @@
             .then(markdown => {
                 console.log('Received markdown:', markdown);
                 
-                // 检查 marked.js 是否加载
-                if (typeof marked === 'undefined') {
-                    console.error('marked.js not loaded');
-                    alert('页面加载失败，请刷新重试');
-                    return;
-                }
-                
                 // 隐藏 Loading 动画
                 loadingOverlay.classList.remove('active');
                 submitBtn.disabled = false;
@@ -461,14 +454,12 @@
                 // 隐藏表单容器
                 document.querySelector('.container').style.display = 'none';
                 
-                // 使用 marked.js 解析 Markdown
-                const html = marked.parse(markdown);
-                console.log('Parsed HTML:', html);
-                
                 // 创建结果容器
                 const resultContainer = document.createElement('div');
                 resultContainer.className = 'result-container';
-                resultContainer.innerHTML = html;
+                
+                // 直接显示原始 Markdown（临时解决方案）
+                resultContainer.textContent = markdown;
                 
                 // 添加返回按钮
                 const backButton = document.createElement('button');
