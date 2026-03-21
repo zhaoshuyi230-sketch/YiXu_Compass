@@ -1,6 +1,10 @@
 import os
 from openai import OpenAI
 import datetime
+import os
+from openai import OpenAI
+import datetime
+import httpx
 
 # 1. 初始化 DeepSeek 客户端（使用你在 Vercel 填的暗号）
 client = OpenAI(
@@ -72,3 +76,14 @@ def get_kin_by_date(year, month, day):
     kin_name = f"{tone}的{seal}"
     
     return {"name": kin_name, "number": target_kin}
+# 1. 初始化 DeepSeek 客户端（使用你在 Vercel 填的暗号）
+client = OpenAI(
+    api_key=os.environ.get("OPENAI_API_KEY"), 
+    base_url="https://api.deepseek.com/v1"
+)
+# 1. 初始化 DeepSeek 客户端（使用你在 Vercel 填的暗号）
+client = OpenAI(
+    api_key=os.environ.get("OPENAI_API_KEY"), 
+    base_url="https://api.deepseek.com/v1",
+    http_client=httpx.Client()
+)
