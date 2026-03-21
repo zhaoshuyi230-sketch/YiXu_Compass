@@ -191,4 +191,4 @@ def generate_report():
     return Response(html_content, mimetype='text/html')
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0', port=5002, threaded=True, use_reloader=False)
+    app.run(debug=False, host='0.0.0.0', port=5001, threaded=True, use_reloader=False)
