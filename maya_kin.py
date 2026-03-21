@@ -213,23 +213,6 @@ AI 避坑实战导师
     # 将 AI 生成的内容转换为 HTML 格式
     ai_html = ai_content.replace('\n', '<br>').replace('**', '<strong>').replace('*', '• ')
     
-    # 提取各个部分
-    title_part = ai_html.split('## 🌌 五大财富能量阵')[0].replace('# ', '').replace('**', '').strip()
-    totem_part = ai_html.split('## 🌌 五大财富能量阵')[1].split('## 🧬 【核心商业基因解码】')[0].replace('*', '').strip()
-    content_part = ai_html.split('## 🧬 【核心商业基因解码】')[1].strip()
-    
-    # 将所有需要用到的名字和Key提前计算好
-    glyph_name = "红龙"  # 简化处理，实际应该从映射表中获取
-    tone_name = "磁性"  # 简化处理，实际应该从映射表中获取
-    guide_name = "白风"  # 简化处理，实际应该从映射表中获取
-    challenge_name = "蓝夜"  # 简化处理，实际应该从映射表中获取
-    support_name = "黄种子"  # 简化处理，实际应该从映射表中获取
-    hidden_name = "红蛇"  # 简化处理，实际应该从映射表中获取
-    
-    # 修复后的城堡和SOP key计算
-    castle_key = "green"  # 简化处理
-    sop_key = "white"  # 简化处理
-    
     # 使用普通字符串拼接，避免 f-string 中的大括号冲突
     html = """
     <html>
@@ -269,117 +252,8 @@ AI 避坑实战导师
             .container {
                 padding: 30px;
             }
-            .energy-overview {
-                margin-bottom: 30px;
-                padding: 30px;
-                background-color: #1e1e1e;
-                border: 1px solid #d4af37;
-                border-radius: 15px;
-                text-align: center;
-                box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-            }
-            .energy-overview h1 {
-                color: #d4af37;
-                font-size: 3em;
-                margin: 0;
-                text-shadow: 0 0 15px #d4af37;
-            }
-            .totem-placeholder {
-                margin: 30px 0;
-                padding: 40px;
-                background-color: #242424;
-                border: 2px solid #d4af37;
-                border-radius: 15px;
-                text-align: center;
-                box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            }
-            .totem-placeholder h3 {
-                color: #d4af37;
-                margin-bottom: 20px;
-            }
-            .totem-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 20px;
-                margin-top: 20px;
-            }
-            .totem-item {
-                padding: 20px;
-                background-color: #2a2a2a;
-                border: 1px solid #d4af37;
-                border-radius: 10px;
-                text-align: center;
-                transition: transform 0.3s ease;
-            }
-            .totem-item:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
-            }
-            .totem-item h4 {
-                color: #d4af37;
-                margin-bottom: 10px;
-            }
-            .section {
-                margin-bottom: 25px;
-                padding: 25px;
-                border: 1px solid #d4af37;
-                border-radius: 10px;
-                background-color: rgba(20, 20, 20, 0.8);
-                box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-                opacity: 0;
-                transform: translateY(20px);
-                animation: fadeIn 0.8s ease forwards;
-            }
-            @keyframes fadeIn {
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-            h2 {
-                color: #d4af37;
-                border-bottom: 2px solid #d4af37;
-                padding-bottom: 10px;
-                font-size: 1.8em;
-            }
-            h3 {
-                color: #d4af37;
-                margin-top: 20px;
-                margin-bottom: 15px;
-                font-size: 1.4em;
-            }
             .content-text {
-                color: #a9a9a9;
-                font-size: 1.1em;
-            }
-            ul {
-                list-style-type: disc;
-                margin-left: 20px;
-                margin-bottom: 20px;
-            }
-            li {
-                margin-bottom: 10px;
-            }
-            strong {
-                color: #d4af37;
-            }
-            .founder-message {
-                margin-top: 40px;
-                padding: 30px;
-                background-color: #1e1e1e;
-                border: 1px solid #d4af37;
-                border-radius: 15px;
-                text-align: center;
-                box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-            }
-            .founder-message h2 {
-                color: #d4af37;
-                margin-bottom: 20px;
-            }
-            .founder-signature {
-                margin-top: 20px;
-                font-style: italic;
-                color: #d4af37;
+                margin-bottom: 30px;
             }
             .export-section {
                 margin-top: 40px;
@@ -403,53 +277,6 @@ AI 避坑实战导师
                 transform: translateY(-3px);
                 box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
             }
-            .modal {
-                display: none;
-                position: fixed;
-                z-index: 1000;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0,0,0,0.8);
-                backdrop-filter: blur(5px);
-            }
-            .modal-content {
-                background-color: #141414;
-                margin: 15% auto;
-                padding: 40px;
-                border: 1px solid #d4af37;
-                border-radius: 15px;
-                width: 90%;
-                max-width: 500px;
-                text-align: center;
-                box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            }
-            .modal-content h2 {
-                color: #d4af37;
-                margin-bottom: 20px;
-            }
-            .qr-code {
-                margin: 30px 0;
-                padding: 20px;
-                background-color: #fff;
-                border-radius: 10px;
-                display: inline-block;
-            }
-            .qr-code img {
-                width: 200px;
-                height: 200px;
-            }
-            .close-button {
-                background-color: #d4af37;
-                color: #1a1a1a;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 5px;
-                font-weight: bold;
-                cursor: pointer;
-                margin-top: 20px;
-            }
         </style>
     </head>
     <body>
@@ -458,90 +285,10 @@ AI 避坑实战导师
         <div class="header-right">AI 避坑实战出品</div>
     </div>
     <div class="container">
-    <div class="energy-overview">
-        <h1>""" + ai_html.split('\n')[0].replace('# ', '').replace('**', '') + """
-    </div>
-    
-    <!-- 五大力量图腾占位符 -->
-    <div class="totem-placeholder">
-        <h3>🌌 五大力量图腾</h3>
-        <div class="totem-grid">
-            """ + ai_html.split('## 🌌 五大财富能量阵')[1].split('## 🧬 【核心商业基因解码】')[0].replace('*', '').strip() + """
-        </div>
-    </div>
-    
-    <!-- 支付提示模态框 -->
-    <div id="paymentModal" class="modal">
-        <div class="modal-content">
-            <h2>内测期间，打赏 19.9 元即可解锁高清蓝图</h2>
-            <div class="qr-code">
-                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Chinese%20WeChat%20payment%20QR%20code%20for%2019.9%20yuan%2C%20professional%20design%2C%20high%20quality&image_size=square_hd" alt="收款码">
-            </div>
-            <p>扫描上方二维码支付后，点击下方按钮下载 PDF</p>
-            <button class="close-button" onclick="closeModalAndPrint()">确认支付并下载</button>
-        </div>
-    </div>
-    
-    <!-- 商业基因板块 -->
-    <div class="section">
-        <h2>【商业基因】</h2>
         <div class="content-text">
             """ + ai_html + """
         </div>
     </div>
-    
-    <!-- 创始人寄语 -->
-    <div class="founder-message">
-        <h2>🌟 创始人寄语</h2>
-        <p>亲爱的朋友，</p>
-        <p>财富不是偶然，而是一种能量的显化。每一个玛雅印记都承载着独特的商业密码，等待着被唤醒。</p>
-        <p>这套「财富天赋罗盘」系统，融合了玛雅历法的古老智慧与现代商业思维，旨在帮助你发现自己的财富天赋，避开商业陷阱，找到最匹配的合作伙伴，制定清晰的行动路径。</p>
-        <p>记住，你的财富天赋是与生俱来的，关键在于如何将其系统化、产品化，让更多人能够从中受益。</p>
-        <p>愿你在商业道路上，既有洞察先机的智慧，又有落地执行的勇气。</p>
-        <div class="founder-signature">
-            <p>—— 艺序创始人</p>
-            <p>AI 避坑实战导师</p>
-        </div>
-    </div>
-    
-    <div class="export-section">
-        <button class="export-button" onclick="openPaymentModal()">获取专属商业蓝图 PDF</button>
-    </div>
-    </div>
-    
-    <script>
-        // 打开支付模态框
-        function openPaymentModal() {
-            document.getElementById('paymentModal').style.display = 'block';
-        }
-        
-        // 关闭模态框并打印
-        function closeModalAndPrint() {
-            document.getElementById('paymentModal').style.display = 'none';
-            // 等待模态框关闭后执行打印
-            setTimeout(function() {
-                window.print();
-            }, 500);
-        }
-        
-        // 点击模态框外部关闭
-        window.onclick = function(event) {
-            var modal = document.getElementById('paymentModal');
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        }
-        
-        // 监听打印事件，确保样式正确
-        window.onbeforeprint = function() {
-            // 确保所有动画已完成
-            var sections = document.querySelectorAll('.section');
-            sections.forEach(function(section) {
-                section.style.opacity = '1';
-                section.style.transform = 'translateY(0)';
-            });
-        };
-    </script>
     </body></html>
     """
     
