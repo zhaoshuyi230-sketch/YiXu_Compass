@@ -3,20 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>财富天赋罗盘 v2</title>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <title>财富天赋罗盘</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            font-family: Arial, sans-serif;
             background-color: #1a1a1a;
             color: #d4af37;
             min-height: 100vh;
@@ -24,9 +14,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-image: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(26, 26, 26, 0.9) 100%);
         }
-        
         .container {
             width: 100%;
             max-width: 600px;
@@ -35,36 +23,28 @@
             border: 1px solid #d4af37;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
         }
-        
         h1 {
             text-align: center;
             font-size: 2.8em;
             margin-bottom: 40px;
             color: #d4af37;
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
-            letter-spacing: 3px;
         }
-        
         .date-selector {
             display: flex;
             justify-content: space-between;
             margin-bottom: 40px;
             gap: 20px;
         }
-        
         .select-group {
             flex: 1;
         }
-        
         label {
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
             color: #d4af37;
         }
-        
         select {
             width: 100%;
             padding: 15px;
@@ -73,15 +53,7 @@
             border-radius: 8px;
             color: #d4af37;
             font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s ease;
         }
-        
-        select:hover {
-            border-color: #f4d03f;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
-        }
-        
         .submit-button {
             width: 100%;
             padding: 20px;
@@ -92,37 +64,7 @@
             font-size: 1.4em;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
-            letter-spacing: 2px;
         }
-        
-        .submit-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
-        }
-        
-        .submit-button:active {
-            transform: translateY(0);
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                margin: 20px;
-                padding: 30px;
-            }
-            
-            .date-selector {
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            h1 {
-                font-size: 2em;
-            }
-        }
-        
-        /* Loading 动画样式 */
         .loading-overlay {
             display: none;
             position: fixed;
@@ -136,184 +78,34 @@
             align-items: center;
             flex-direction: column;
         }
-        
         .loading-overlay.active {
             display: flex;
         }
-        
-        .compass-loader {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            margin-bottom: 40px;
-        }
-        
-        .compass-circle {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 3px solid #d4af37;
-            border-radius: 50%;
-            animation: rotate 2s linear infinite;
-        }
-        
-        .compass-circle:nth-child(2) {
-            width: 80%;
-            height: 80%;
-            top: 10%;
-            left: 10%;
-            border-color: #a67c00;
-            animation-direction: reverse;
-            animation-duration: 1.5s;
-        }
-        
-        .compass-circle:nth-child(3) {
-            width: 60%;
-            height: 60%;
-            top: 20%;
-            left: 20%;
-            border-color: #f4d03f;
-            animation-duration: 1s;
-        }
-        
-        .compass-center {
-            position: absolute;
-            width: 40%;
-            height: 40%;
-            top: 30%;
-            left: 30%;
-            background: radial-gradient(circle, #d4af37 0%, #a67c00 100%);
-            border-radius: 50%;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
-        }
-        
-        @keyframes rotate {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-        
         .loading-text {
-            font-size: 1.8em;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
             color: #d4af37;
-            text-align: center;
-            animation: pulse 1.5s ease-in-out infinite;
         }
-        
-        .loading-subtext {
-            font-size: 1em;
-            color: #a9a9a9;
-            text-align: center;
-            margin-top: 15px;
-        }
-        
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
-            }
-        }
-        
-        .submit-button:disabled {
-            background: linear-gradient(135deg, #666 0%, #444 100%);
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .result-container {
-            display: none;
-            width: 100%;
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 30px;
-            background-color: #1a1a1a;
-            border: 1px solid #d4af37;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-        
-        .result-container.active {
-            display: block;
-        }
-        
-        /* 结果页面样式 */
         .result-container {
             max-width: 900px;
             margin: 0 auto;
             padding: 40px 30px;
             background-color: #1a1a1a;
+            border: 1px solid #d4af37;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
-        
-        .result-container h1 {
-            font-size: 2.5em;
-            color: #d4af37;
-            text-align: center;
-            margin-bottom: 40px;
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
-        }
-        
-        .result-container h2 {
-            font-size: 1.8em;
-            color: #d4af37;
-            border-bottom: 2px solid #d4af37;
-            padding-bottom: 10px;
-            margin-top: 40px;
-            margin-bottom: 20px;
-        }
-        
-        .result-container h3 {
-            font-size: 1.4em;
-            color: #d4af37;
-            margin-top: 30px;
-            margin-bottom: 15px;
-        }
-        
-        .result-container p {
-            margin-bottom: 15px;
-            color: #a9a9a9;
-            line-height: 1.8;
-        }
-        
-        .result-container strong {
-            color: #d4af37;
-            font-weight: bold;
-        }
-        
-        .result-container ul {
-            list-style-type: disc;
-            margin-left: 30px;
-            margin-bottom: 20px;
-        }
-        
-        .result-container li {
-            margin-bottom: 10px;
-            color: #a9a9a9;
-            line-height: 1.8;
-        }
-        
         .back-button {
-            display: inline-block;
-            margin-top: 40px;
+            margin-top: 30px;
             padding: 15px 30px;
             background: linear-gradient(135deg, #d4af37 0%, #a67c00 100%);
             border: none;
             border-radius: 8px;
             color: #1a1a1a;
-            font-size: 1.1em;
+            font-size: 1em;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-        }
-        
-        .back-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.5);
         }
     </style>
 </head>
@@ -324,14 +116,13 @@
             <div class="date-selector">
                 <div class="select-group">
                     <label for="year">年</label>
-                    <select id="year" name="year" required>
-                        <!-- 生成最近20年的选项 -->
+                    <select id="year" name="year">
                         <option value="">请选择</option>
                     </select>
                 </div>
                 <div class="select-group">
                     <label for="month">月</label>
-                    <select id="month" name="month" required>
+                    <select id="month" name="month">
                         <option value="">请选择</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -349,39 +140,8 @@
                 </div>
                 <div class="select-group">
                     <label for="day">日</label>
-                    <select id="day" name="day" required>
+                    <select id="day" name="day">
                         <option value="">请选择</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                        <option value="6">6</option>
-                        <option value="7">7</option>
-                        <option value="8">8</option>
-                        <option value="9">9</option>
-                        <option value="10">10</option>
-                        <option value="11">11</option>
-                        <option value="12">12</option>
-                        <option value="13">13</option>
-                        <option value="14">14</option>
-                        <option value="15">15</option>
-                        <option value="16">16</option>
-                        <option value="17">17</option>
-                        <option value="18">18</option>
-                        <option value="19">19</option>
-                        <option value="20">20</option>
-                        <option value="21">21</option>
-                        <option value="22">22</option>
-                        <option value="23">23</option>
-                        <option value="24">24</option>
-                        <option value="25">25</option>
-                        <option value="26">26</option>
-                        <option value="27">27</option>
-                        <option value="28">28</option>
-                        <option value="29">29</option>
-                        <option value="30">30</option>
-                        <option value="31">31</option>
                     </select>
                 </div>
             </div>
@@ -391,100 +151,10 @@
     
     <!-- Loading 动画 -->
     <div class="loading-overlay" id="loadingOverlay">
-        <div class="compass-loader">
-            <div class="compass-circle"></div>
-            <div class="compass-circle"></div>
-            <div class="compass-circle"></div>
-            <div class="compass-center"></div>
-        </div>
         <div class="loading-text">罗盘高速推演中...</div>
-        <div class="loading-subtext">正在连接宇宙能量，请稍候</div>
     </div>
     
     <script>
-        // 获取 DOM 元素
-        const submitBtn = document.getElementById('submitBtn');
-        const loadingOverlay = document.getElementById('loadingOverlay');
-        const form = document.querySelector('form');
-        
-        // 监听表单提交
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // 检查表单是否完整
-            const year = document.getElementById('year').value;
-            const month = document.getElementById('month').value;
-            const day = document.getElementById('day').value;
-            
-            if (!year || !month || !day) {
-                alert('请选择完整的日期');
-                return;
-            }
-            
-            // 显示 Loading 动画
-            loadingOverlay.classList.add('active');
-            submitBtn.disabled = true;
-            submitBtn.textContent = '罗盘高速推演中...';
-            
-            // 创建 FormData 对象
-            const formData = new FormData();
-            formData.append('year', year);
-            formData.append('month', month);
-            formData.append('day', day);
-            
-            // 发送请求
-            fetch('/generate_report', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('网络响应异常');
-                }
-                return response.text();
-            })
-            .then(markdown => {
-                console.log('Received markdown:', markdown);
-                
-                // 隐藏 Loading 动画
-                loadingOverlay.classList.remove('active');
-                submitBtn.disabled = false;
-                submitBtn.textContent = '开启罗盘';
-                
-                // 隐藏表单容器
-                document.querySelector('.container').style.display = 'none';
-                
-                // 创建结果容器
-                const resultContainer = document.createElement('div');
-                resultContainer.className = 'result-container';
-                
-                // 直接显示原始 Markdown（临时解决方案）
-                resultContainer.textContent = markdown;
-                
-                // 添加返回按钮
-                const backButton = document.createElement('button');
-                backButton.className = 'back-button';
-                backButton.textContent = '重新测算';
-                backButton.onclick = () => location.reload();
-                resultContainer.appendChild(backButton);
-                
-                // 添加到页面
-                document.body.appendChild(resultContainer);
-                
-                // 移除 loading overlay
-                loadingOverlay.remove();
-            })
-            .catch(error => {
-                // 隐藏 Loading 动画
-                loadingOverlay.classList.remove('active');
-                submitBtn.disabled = false;
-                submitBtn.textContent = '开启罗盘';
-                
-                console.error('Error:', error);
-                alert('生成报告失败，请重试');
-            });
-        });
-        
         // 生成年份选项
         const yearSelect = document.getElementById('year');
         const currentYear = new Date().getFullYear();
@@ -517,6 +187,81 @@
                 option.textContent = i;
                 daySelect.appendChild(option);
             }
+        });
+        
+        // 监听表单提交
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 检查表单是否完整
+            const year = document.getElementById('year').value;
+            const month = document.getElementById('month').value;
+            const day = document.getElementById('day').value;
+            
+            if (!year || !month || !day) {
+                alert('请选择完整的日期');
+                return;
+            }
+            
+            // 显示 Loading 动画
+            document.getElementById('loadingOverlay').classList.add('active');
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').textContent = '罗盘高速推演中...';
+            
+            // 创建 FormData 对象
+            const formData = new FormData();
+            formData.append('year', year);
+            formData.append('month', month);
+            formData.append('day', day);
+            
+            // 发送请求
+            fetch('/generate_report', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('网络响应异常');
+                }
+                return response.text();
+            })
+            .then(markdown => {
+                console.log('Received markdown:', markdown);
+                
+                // 隐藏 Loading 动画
+                document.getElementById('loadingOverlay').classList.remove('active');
+                document.getElementById('submitBtn').disabled = false;
+                document.getElementById('submitBtn').textContent = '开启罗盘';
+                
+                // 隐藏表单容器
+                document.querySelector('.container').style.display = 'none';
+                
+                // 创建结果容器
+                const resultContainer = document.createElement('div');
+                resultContainer.className = 'result-container';
+                
+                // 直接显示原始 Markdown
+                resultContainer.textContent = markdown;
+                
+                // 添加返回按钮
+                const backButton = document.createElement('button');
+                backButton.className = 'back-button';
+                backButton.textContent = '重新测算';
+                backButton.onclick = () => location.reload();
+                resultContainer.appendChild(backButton);
+                
+                // 添加到页面
+                document.body.appendChild(resultContainer);
+            })
+            .catch(error => {
+                // 隐藏 Loading 动画
+                document.getElementById('loadingOverlay').classList.remove('active');
+                document.getElementById('submitBtn').disabled = false;
+                document.getElementById('submitBtn').textContent = '开启罗盘';
+                
+                console.error('Error:', error);
+                alert('生成报告失败，请重试');
+            });
         });
     </script>
 </body>
