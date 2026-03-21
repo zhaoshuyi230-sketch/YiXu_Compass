@@ -1,18 +1,18 @@
 from flask import Flask, request, render_template_string
 import maya_kin
 import os
-from pyngrok import ngrok
+
 
 app = Flask(__name__)
 
-# 配置 ngrok
+
 try:
-    # 启动 ngrok 隧道，指向本地 5001 端口
-    public_url = ngrok.connect(5001)
+    
+    
     print(f"\n--- 公网访问链接: {public_url} ---")
     print("复制以上链接发送给客户\n")
 except Exception as e:
-    print(f"ngrok 启动失败: {e}")
+    
     print("请确保网络连接正常\n")
 
 @app.route('/')
