@@ -142,6 +142,59 @@
             margin-bottom: 1em;
             color: #D1D5DB;
         }
+        .cta-card {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(26, 26, 26, 0.9) 100%);
+            border: 2px solid #d4af37;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            }
+            to {
+                box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
+            }
+        }
+        .cta-card h3 {
+            color: #d4af37;
+            font-size: 1.4em;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .cta-card p {
+            color: #E5E7EB;
+            line-height: 1.8;
+            text-align: center;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .cta-card .highlight {
+            color: #d4af37;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        @media (max-width: 768px) {
+            .cta-card {
+                padding: 20px;
+                margin-top: 30px;
+            }
+            .cta-card h3 {
+                font-size: 1.2em;
+                margin-bottom: 15px;
+            }
+            .cta-card p {
+                font-size: 1em;
+                line-height: 1.6;
+            }
+            .cta-card .highlight {
+                font-size: 1.1em;
+            }
+        }
     </style>
 </head>
 <body>
@@ -278,6 +331,16 @@
                 
                 // 使用marked解析Markdown
                 resultContainer.innerHTML = marked.parse(markdown);
+                
+                // 添加引流转化卡片
+                const ctaCard = document.createElement('div');
+                ctaCard.className = 'cta-card';
+                ctaCard.innerHTML = `
+                    <h3>🎁 想知道如何把这份天赋变成真实现金流？</h3>
+                    <p>截图保存你的罗盘，添加主理人微信/小红书：<span class="highlight">【艺序·AI避坑实战】</span></p>
+                    <p>发送截图，为你进行 1v1 深度商业拆解，获取你的专属落地指南！</p>
+                `;
+                resultContainer.appendChild(ctaCard);
                 
                 // 添加返回按钮
                 const backButton = document.createElement('button');
