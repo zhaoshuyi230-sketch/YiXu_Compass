@@ -131,7 +131,7 @@ def build_report(date_str):
     html = """
     <html>
     <head>
-        <title>财富天赋罗盘 - KIN """ + str(kin_number) + """
+        <title>财富天赋罗盘 - KIN """ + str(kin_number) + """</title>
         <meta charset="UTF-8">
         <!-- 【UI换装】黑金高端版CSS -->
         <style>
