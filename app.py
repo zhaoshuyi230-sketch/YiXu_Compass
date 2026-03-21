@@ -185,20 +185,9 @@ def generate_report():
     
     date_str = f"{year}-{month.zfill(2)}-{day.zfill(2)}"
     
-    # 调用 build_report 函数生成报告
-    maya_kin.build_report(date_str)
-    
-    # 计算 kin 编号以获取生成的文件名
-    details = maya_kin.get_kin_details(date_str)
-    kin_number = details.get('kin', 0)
-    file_name = f"KIN_{kin_number}_BlackGold_Report.html"
-    
-    # 读取生成的 HTML 文件并返回内容
-    if os.path.exists(file_name):
-        with open(file_name, 'r', encoding='utf-8') as f:
-            return f.read()
-    else:
-        return "报告生成失败，请重试"
+    # 调用 build_report 函数生成报告并直接返回 HTML 内容
+    html_content = maya_kin.build_report(date_str)
+    return html_content
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0', port=5002, threaded=True, use_reloader=False)

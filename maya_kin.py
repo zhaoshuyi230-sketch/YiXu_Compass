@@ -510,10 +510,5 @@ def build_report(date_str):
     </body></html>
     """
     
-    file_name = "KIN_{}_BlackGold_Report.html".format(kin_number)
-    try:
-        with open(file_name, 'w', encoding='utf-8') as f:
-            f.write(html)
-        print("\n--- ✅ 199元黑金版报告已生成！ 文件名: {0} ---".format(file_name))
-    except Exception as e:
-        print("\n--- ❌ 写入文件失败: {0} ---".format(e))
+    print("\n--- ✅ 199元黑金版报告已生成！ ---")
+    return html
