@@ -2,26 +2,15 @@
   "version": 2,
   "builds": [
     {
-      "src": "app_simple.py",
+      "src": "app.py",
       "use": "@vercel/python",
-      "config": {
-        "pythonVersion": "3.11",
-        "includeFiles": ["index.html", "*.jpg", "*.png", "*.jpeg"]
-      }
+      "config": { "includeFiles": ["index.html", "*.jpg", "*.png", "*.jpeg"] }
     }
   ],
   "routes": [
     {
-      "src": "/",
-      "dest": "app_simple.py"
-    },
-    {
-      "src": "/generate_report",
-      "dest": "app_simple.py"
-    },
-    {
-      "src": "/(.*\.(jpg|jpeg|png|gif|webp))",
-      "dest": "$1"
+      "src": "/(.*)",
+      "dest": "app.py"
     }
   ]
 }
