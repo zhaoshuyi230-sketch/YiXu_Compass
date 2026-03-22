@@ -2,15 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "app.py",
-      "use": "@vercel/python",
-      "config": { "includeFiles": ["index.html", "*.jpg", "*.png", "*.jpeg"] }
+      "src": "index_static.html",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "app.py"
+      "src": "/",
+      "dest": "index_static.html"
     }
   ]
 }

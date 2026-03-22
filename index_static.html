@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>财富天赋罗盘</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #d4af37;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 40px 30px;
+            background-color: rgba(20, 20, 20, 0.8);
+            border: 1px solid #d4af37;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.3);
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: #d4af37;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+        p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .btn {
+            background: linear-gradient(45deg, #d4af37, #a67c00);
+            color: #1a1a1a;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.6);
+        }
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
+            .container {
+                max-width: 100%;
+                padding: 30px 20px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>财富天赋罗盘</h1>
+        <p>欢迎来到财富天赋罗盘！</p>
+        <p>这是一个静态测试页面，用于测试部署是否成功。</p>
+        <p>如果您能看到这个页面，说明部署成功了！</p>
+        <button class="btn">测试按钮</button>
+    </div>
+</body>
+</html>
