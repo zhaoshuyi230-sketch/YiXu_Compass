@@ -553,8 +553,7 @@
                 
                 // 提取主图腾名称
                 const kinMatch = markdown.match(/主图腾：([^\s]+)\s*[-–—]/);
-                const mainTotem = kinMatch ? kinMatch[1] : '';
-                const totemText = mainTotem ? `你的${mainTotem}` : '你的天赋';
+                const mainTotem = kinMatch ? kinMatch[1] : '你的天赋';
                 
                 // 添加VIP能量解锁卡
                 const ctaCard = document.createElement('div');
@@ -562,18 +561,20 @@
                 ctaCard.style.background = 'linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(10, 10, 10, 0.95) 100%)';
                 ctaCard.style.backdropFilter = 'blur(10px)';
                 ctaCard.innerHTML = `
-                    <h3>� 你的财富风暴，只解锁了 50%</h3>
-                    <p style="margin-bottom: 15px; color: #a67c00;">Day 8-13 的闭环收割行动和创始人专属寄语已被能量封印。</p>
-                    <p style="margin-bottom: 10px;">🎁 <strong>【限时福利 · 全自动内测】</strong></p>
-                    <p style="margin-bottom: 15px;">只需 <span class="highlight">¥19.9</span>（原价 ¥199），即可获取：</p>
-                    <p style="margin-left: 20px; margin-bottom: 8px;">✅ 完整 Day 1-13 实战破局行动指南（解锁最终"收割"环节）</p>
-                    <p style="margin-left: 20px; margin-bottom: 8px;">✅ 主理人 1v1 专属商业基因拆解（针对你的印记给出 3 条具体赛道）</p>
-                    <p style="margin-left: 20px; margin-bottom: 15px;">✅ 《一人公司·AI 落地启动方案》（PDF 简版）</p>
+                    <h3>🔒 警告：你的财富美学仅完成了"策展"，尚未"变现"</h3>
+                    <p style="margin-bottom: 15px; color: #a67c00;">亲爱的${mainTotem}，Day 1-7 让你看清了美，但 Day 8-13 才是教你如何把美变成真金白银。</p>
+                    <p style="margin-bottom: 10px;">没有后半段的"闭环收割"，你的商业罗盘只是一张精美的艺术废纸。</p>
+                    <p style="margin-bottom: 10px;">🎁 <strong>【限时福利 · 艺序首款产品创世内测】</strong></p>
+                    <p style="margin-bottom: 15px;">只需 <span class="highlight">¥19.9</span>（一杯奶茶钱，解锁你的商业闭环）：</p>
+                    <p style="margin-left: 20px; margin-bottom: 8px;">✅ 解锁封印：获取 Day 8-13 核心收割行动 + 创始人深度寄语</p>
+                    <p style="margin-left: 20px; margin-bottom: 8px;">✅ 对标实战：深度拆解 3 个 AI 时代最适合你的"轻资产"赛道</p>
+                    <p style="margin-left: 20px; margin-bottom: 15px;">✅ AI 赋能：主理人 1v1 语音拆解，教你如何用 AI 把"美感"变成自动化赚钱机器</p>
                     <div style="text-align: center; margin-top: 20px;">
                         <img src="微信图片pay_qr.jpg" id="pay-qr" style="display: block !important; margin: 20px auto; width: 220px; border: 2px solid #D4AF37; border-radius: 12px; box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);">
                     </div>
-                    <p style="text-align: center; margin-top: 15px; color: #d4af37; font-weight: bold; font-size: 1em;">👇 扫码支付 ¥19.9，截图发送给主理人即刻解锁</p>
+                    <p style="text-align: center; margin-top: 15px; color: #d4af37; font-weight: bold; font-size: 1em;">👇 扫码支付 ¥19.9，截图发送至后台即刻解锁</p>
                     <p style="text-align: center; margin-top: 8px; color: #64c8c8; font-size: 0.85em;">微信搜索：【艺序·AI创业实战】</p>
+                    <p style="text-align: center; margin-top: 10px; color: #ff6b6b; font-size: 0.85em; font-weight: bold;">🎁 前 10 位付费用户，额外赠送《AI 一人公司起步工具箱》</p>
                 `;
                 resultContainer.appendChild(ctaCard);
                 
