@@ -3,20 +3,28 @@ from openai import OpenAI
 import datetime
 import httpx
 
-# 1. 初始化 DeepSeek 客户端（使用你在 Vercel 填的暗号）
-try:
-    client = OpenAI(
-        api_key=os.environ.get("DEEPSEEK_API_KEY"), 
-        base_url="https://api.deepseek.com/v1",
-        http_client=httpx.Client()
-    )
-    API_AVAILABLE = True
-except Exception as e:
-    print(f"API 初始化失败: {str(e)}")
-    print("将使用保底模式运行")
-    API_AVAILABLE = False
+# 1. 全局变量
+API_AVAILABLE = False
+client = None
 
-# 2. 满血版核心 Prompt
+# 2. 初始化 API 客户端
+def init_api():
+    global API_AVAILABLE, client
+    if not API_AVAILABLE:
+        try:
+            client = OpenAI(
+                api_key=os.environ.get("DEEPSEEK_API_KEY"), 
+                base_url="https://api.deepseek.com/v1",
+                http_client=httpx.Client()
+            )
+            API_AVAILABLE = True
+            print("API 初始化成功")
+        except Exception as e:
+            print(f"API 初始化失败: {str(e)}")
+            print("将使用保底模式运行")
+            API_AVAILABLE = False
+
+# 3. 满血版核心 Prompt
 SYSTEM_PROMPT = """
 你现在是《艺序》的首席财富罗盘导师，精通古玛雅历法与现代商业变现的底层逻辑。你的任务是根据用户的玛雅印记（KIN），输出一份极具洞察力、令人震撼、看完忍不住转发的【个人商业说明书】。
 
@@ -70,6 +78,9 @@ SYSTEM_PROMPT = """
 # 3. 这里的函数是给 app.py 调用的“发动机”
 def generate_report(kin_name):
     try:
+        # 初始化 API 客户端
+        init_api()
+        
         if not API_AVAILABLE:
             return "API 不可用，使用保底内容"
         
