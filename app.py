@@ -4,20 +4,28 @@ import os
 
 app = Flask(__name__)
 
+# 获取当前文件所在目录
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 @app.route('/')
 def index():
-    # 直接返回index.html
-    with open('index.html', 'r', encoding='utf-8') as f:
-        return f.read()
+    # 使用绝对路径读取index.html
+    index_path = os.path.join(BASE_DIR, 'index.html')
+    try:
+        with open(index_path, 'r', encoding='utf-8') as f:
+            return f.read()
+    except Exception as e:
+        return f"Error reading index.html: {str(e)}", 500
 
 @app.route('/<path:filename>')
 def serve_static(filename):
     # 处理静态文件（图片等）
     if filename.endswith(('.jpg', '.jpeg', '.png', '.gif', '.webp')):
         try:
-            return send_file(filename)
-        except:
-            pass
+            file_path = os.path.join(BASE_DIR, filename)
+            return send_file(file_path)
+        except Exception as e:
+            return f"Error serving file: {str(e)}", 404
     return "Not Found", 404
 
 @app.route('/generate_report', methods=['POST'])
