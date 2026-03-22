@@ -73,7 +73,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(26, 26, 26, 0.95);
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.98) 0%, rgba(26, 26, 26, 0.95) 100%);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -82,11 +82,137 @@
         .loading-overlay.active {
             display: flex;
         }
+        .compass-animation {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+        .compass-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid transparent;
+            border-radius: 50%;
+            border-top-color: #d4af37;
+            border-right-color: #d4af37;
+            box-sizing: border-box;
+        }
+        .compass-ring-1 {
+            width: 200px;
+            height: 200px;
+            animation: rotate 3s linear infinite;
+        }
+        .compass-ring-2 {
+            width: 160px;
+            height: 160px;
+            border-top-color: #a67c00;
+            border-right-color: #a67c00;
+            animation: rotate 2.5s linear infinite reverse;
+        }
+        .compass-ring-3 {
+            width: 120px;
+            height: 120px;
+            border-top-color: #d4af37;
+            border-right-color: transparent;
+            border-bottom-color: #d4af37;
+            border-left-color: transparent;
+            animation: rotate 2s linear infinite;
+        }
+        .compass-ring-4 {
+            width: 80px;
+            height: 80px;
+            border-top-color: #a67c00;
+            border-right-color: #a67c00;
+            border-bottom-color: #a67c00;
+            animation: rotate 1.5s linear infinite reverse;
+        }
+        .compass-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, #d4af37 0%, #a67c00 100%);
+            border-radius: 50%;
+            animation: pulse 1.5s ease-in-out infinite;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.8);
+        }
+        .compass-needle-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            animation: rotate 8s linear infinite;
+        }
+        .compass-needle {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 50px;
+            background: #d4af37;
+            border-radius: 2px;
+        }
+        .compass-needle::before {
+            content: '';
+            position: absolute;
+            top: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 16px solid #d4af37;
+        }
+        @keyframes rotate {
+            from {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+        @keyframes pulse {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                box-shadow: 0 0 30px rgba(212, 175, 55, 0.8);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.1);
+                box-shadow: 0 0 50px rgba(212, 175, 55, 1);
+            }
+        }
         .loading-text {
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-bottom: 10px;
+            margin-top: 40px;
+            font-size: 1.3em;
             color: #d4af37;
+            font-weight: bold;
+            text-align: center;
+            animation: breathe 2s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
+        @keyframes breathe {
+            0%, 100% {
+                opacity: 0.6;
+                transform: scale(0.98);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.02);
+            }
+        }
+        .loading-subtext {
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #a67c00;
+            text-align: center;
+            opacity: 0.8;
         }
         .result-container {
             max-width: 900px;
@@ -239,7 +365,18 @@
     
     <!-- Loading 动画 -->
     <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-text">罗盘高速推演中...</div>
+        <div class="compass-animation">
+            <div class="compass-ring compass-ring-1"></div>
+            <div class="compass-ring compass-ring-2"></div>
+            <div class="compass-ring compass-ring-3"></div>
+            <div class="compass-ring compass-ring-4"></div>
+            <div class="compass-center"></div>
+            <div class="compass-needle-container">
+                <div class="compass-needle"></div>
+            </div>
+        </div>
+        <div class="loading-text">🎁 艺序 AI 创业导师正在为你拨动财富指针...</div>
+        <div class="loading-subtext">正在连接宇宙能量，请稍候</div>
     </div>
     
     <script>
