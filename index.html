@@ -553,7 +553,8 @@
                 
                 // 提取主图腾名称
                 const kinMatch = markdown.match(/主图腾：([^\s]+)\s*[-–—]/);
-                const kinName = kinMatch ? kinMatch[1] : '你的天赋';
+                const kinName = kinMatch ? kinMatch[1] : '';
+                const greeting = kinName ? `亲爱的${kinName}印记持有者` : '亲爱的创业者';
                 
                 // 添加封印占位区域（模糊效果）
                 const sealArea = document.createElement('div');
@@ -578,20 +579,19 @@
                 ctaCard.style.background = 'linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(10, 10, 10, 0.95) 100%)';
                 ctaCard.style.backdropFilter = 'blur(10px)';
                 ctaCard.innerHTML = `
-                    <h3>🔒 警告：你的财富美学仅完成了"策展"，尚未"变现"</h3>
-                    <p style="margin-bottom: 15px; color: #a67c00;">亲爱的 ${kinName}，Day 1-7 只是让你看清了"势"，而 Day 8-13 才是教你如何"取财"。</p>
-                    <p style="margin-bottom: 10px;">没有后半段的"闭环收割"，你的商业罗盘只是一张精美的艺术废纸。</p>
+                    <h3>🔒 警告：你的财富系统仅构建了 50%，尚未完成商业闭环</h3>
+                    <p style="margin-bottom: 15px; color: #a67c00;">${greeting}，Day 1-7 的行动只为你蓄满了势能，而 Day 8-13 才是教你如何将势能转化为真实的现金流。</p>
+                    <p style="margin-bottom: 10px;">没有后半段的"闭环收割"与"精准定价"，你前面的所有努力，都只是在为他人做免费的铺垫。</p>
                     <p style="margin-bottom: 10px;">🎁 <strong>【限时福利 · 艺序首款产品创世内测】</strong></p>
                     <p style="margin-bottom: 15px;">只需 <span class="highlight">¥19.9</span>（一杯奶茶钱，解锁你的商业闭环）：</p>
-                    <p style="margin-left: 20px; margin-bottom: 8px;">✅ 解锁封印：获取 Day 8-13 核心收割行动 + 创始人避坑实战私藏寄语</p>
-                    <p style="margin-left: 20px; margin-bottom: 8px;">✅ 赛道精准对标：由主理人基于 AI 模型，为你匹配 3 个当下最能起量的 AI 变现赛道</p>
-                    <p style="margin-left: 20px; margin-bottom: 15px;">✅ 实战手册：赠送《一人公司·AI 零成本起步工具箱》电子版</p>
+                    <p style="margin-left: 20px; margin-bottom: 8px;">✅ 解锁封印：获取 Day 8-13 核心收割行动 + 创始人避坑私藏寄语</p>
+                    <p style="margin-left: 20px; margin-bottom: 8px;">✅ 赛道匹配：由主理人 1v1 深度拆解，为你定制 3 条当下最能起量的 AI 变现赛道</p>
+                    <p style="margin-left: 20px; margin-bottom: 15px;">✅ 工具赠送：附赠《一人公司·AI 零成本起步工具箱》（PDF版）</p>
                     <div style="text-align: center; margin-top: 20px;">
                         <img src="pay_qr.jpg" id="pay-qr" style="display: block !important; margin: 20px auto; width: 220px; border: 2px solid #D4AF37; border-radius: 12px; box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);">
                     </div>
                     <p style="text-align: center; margin-top: 15px; color: #d4af37; font-weight: bold; font-size: 1em;">👇 扫码支付 ¥19.9，截图发送至后台即刻解锁</p>
                     <p style="text-align: center; margin-top: 8px; color: #64c8c8; font-size: 0.85em;">微信搜索：【艺序·AI创业实战】</p>
-                    <p style="text-align: center; margin-top: 10px; color: #ff6b6b; font-size: 0.85em; font-weight: bold;">🎁 前 10 位付费用户，额外赠送《AI 一人公司起步工具箱》</p>
                 `;
                 resultContainer.appendChild(ctaCard);
                 
