@@ -386,8 +386,8 @@
             <div class="compass-ring ring-3"></div>
             <div class="compass-center"></div>
         </div>
-        <div class="loading-text" id="loadingText">[1/4] 正在开启 KIN 能量视角...</div>
-        <div class="loading-progress">宇宙数据流正在同步</div>
+        <div class="loading-text" id="loadingText">正在连接 KIN 玛雅时空节点...</div>
+        <div class="loading-progress">能量共振中，请保持专注</div>
     </div>
     
     <script>
@@ -458,10 +458,10 @@
         
         // 动态文案轮播
         const loadingMessages = [
-            '[1/4] 正在开启 KIN 能量视角...',
-            '[2/4] 正在扫描 20 组商业大佬模型进行对标...',
-            '[3/4] 正在计算 13 天破局行动的最优解...',
-            '[4/4] 能量校准完成，正在显化你的财富罗盘...'
+            '正在连接 KIN 玛雅时空节点...',
+            'AI 正在深度解码你的商业基因序列...',
+            '正在从 20 个维度对比顶级创业者模型...',
+            '能量校准完成，正在生成你的破局蓝图...'
         ];
         let messageIndex = 0;
         let messageInterval;
@@ -478,7 +478,7 @@
                     textElement.textContent = loadingMessages[messageIndex];
                     textElement.style.opacity = '1';
                 }, 300);
-            }, 3000);
+            }, 2500);
         }
         
         function stopTextRotation() {
@@ -556,17 +556,25 @@
                 const mainTotem = kinMatch ? kinMatch[1] : '';
                 const totemText = mainTotem ? `你的${mainTotem}` : '你的天赋';
                 
-                // 添加引流转化卡片
+                // 添加付费转化卡片
                 const ctaCard = document.createElement('div');
                 ctaCard.className = 'cta-card';
                 ctaCard.innerHTML = `
-                    <h3>🎁 【限时福利】想知道${totemText}能量如何变现？</h3>
-                    <p>每天仅限 <span class="highlight">3 位</span> 幸运战士，由艺序主理人亲自进行 1v1 商业基因拆解。</p>
-                    <p>截图保存你的罗盘，添加微信/小红书：<span class="highlight">【艺序·AI创业实战】</span></p>
-                    <p style="margin-top: 15px; margin-bottom: 10px;">发送截图，获取：</p>
+                    <h3>💎 你的财富基因，值得一次"深度觉醒"</h3>
+                    <p style="margin-bottom: 15px;">上方的罗盘是"天命"，而接下来的实战落地是"人谋"。</p>
+                    <p style="margin-bottom: 10px;">🎁 <strong>【限时福利 · 艺序 AI 创业实战内测】</strong></p>
+                    <p style="margin-bottom: 15px;">只需 <span class="highlight">¥19.9</span>（原价 ¥199），即可获取：</p>
                     <p style="margin-left: 20px; margin-bottom: 8px;">✅ 《一人公司·AI 落地启动方案》（PDF 简版）</p>
-                    <p style="margin-left: 20px; margin-bottom: 8px;">✅ 专属搞钱赛道对标清单</p>
-                    <p style="margin-top: 20px; font-style: italic; color: #64c8c8; font-size: 1em;">"在这个 AI 时代，视野是唯一的稀缺资产。"</p>
+                    <p style="margin-left: 20px; margin-bottom: 8px;">✅ 主理人 1v1 专属商业基因拆解（针对你的印记给出 3 条具体赛道）</p>
+                    <p style="margin-left: 20px; margin-bottom: 15px;">✅ 艺序首批"实战派"校友社群入场券</p>
+                    <p style="margin-top: 15px; margin-bottom: 8px;"><strong>操作指引：</strong></p>
+                    <p style="margin-bottom: 5px;">1. 截图保存你的罗盘报告</p>
+                    <p style="margin-bottom: 5px;">2. 扫描下方二维码添加主理人</p>
+                    <p style="margin-bottom: 15px;">3. 发送截图并支付 ¥19.9，即刻开启你的 AI 创业首秀</p>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <img id="pay-qr" src="" alt="微信二维码" style="width: 180px; height: 180px; border: 2px solid #d4af37; border-radius: 10px; display: none;">
+                        <p style="margin-top: 10px; color: #a67c00; font-size: 0.9em;">或搜索微信：【艺序·AI创业实战】</p>
+                    </div>
                 `;
                 resultContainer.appendChild(ctaCard);
                 
