@@ -623,27 +623,32 @@
                         🎨 生成分享海报
                     </button>
                 `;
-                
-                // 添加分享海报功能
-                document.getElementById('sharePosterBtn').addEventListener('click', async function() {
-                    try {
-                        const canvas = await html2canvas(quoteCard, {
-                            backgroundColor: '#1a1a1a',
-                            scale: 2,
-                            useCORS: true,
-                            logging: false
-                        });
-                        
-                        const link = document.createElement('a');
-                        link.download = `艺序财富罗盘-${kinName}.png`;
-                        link.href = canvas.toDataURL('image/png');
-                        link.click();
-                    } catch (error) {
-                        console.error('生成海报失败:', error);
-                        alert('海报生成失败，请直接截图分享');
-                    }
-                });
                 resultContainer.insertBefore(quoteCard, resultContainer.firstChild);
+                
+                // 添加分享海报功能（在元素添加到DOM后）
+                setTimeout(() => {
+                    const shareBtn = document.getElementById('sharePosterBtn');
+                    if (shareBtn) {
+                        shareBtn.addEventListener('click', async function() {
+                            try {
+                                const canvas = await html2canvas(quoteCard, {
+                                    backgroundColor: '#1a1a1a',
+                                    scale: 2,
+                                    useCORS: true,
+                                    logging: false
+                                });
+                                
+                                const link = document.createElement('a');
+                                link.download = `艺序财富罗盘-${kinName}.png`;
+                                link.href = canvas.toDataURL('image/png');
+                                link.click();
+                            } catch (error) {
+                                console.error('生成海报失败:', error);
+                                alert('海报生成失败，请直接截图分享');
+                            }
+                        });
+                    }
+                }, 100);
                 
                 // 添加VIP能量解锁卡
                 const ctaCard = document.createElement('div');
