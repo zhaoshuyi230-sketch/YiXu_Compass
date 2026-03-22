@@ -556,23 +556,6 @@
                 const kinName = kinMatch ? kinMatch[1] : '';
                 const greeting = kinName ? `亲爱的${kinName}印记持有者` : '亲爱的创业者';
                 
-                // 添加封印占位区域（模糊效果）
-                const sealArea = document.createElement('div');
-                sealArea.className = 'seal-area';
-                sealArea.innerHTML = `
-                    <div style="text-align: center; padding: 30px 20px; background: linear-gradient(135deg, rgba(20, 20, 20, 0.9) 0%, rgba(40, 30, 10, 0.8) 100%); border-radius: 15px; border: 1px solid rgba(212, 175, 55, 0.3); margin: 20px 0;">
-                        <p style="font-size: 1.2em; color: #d4af37; margin-bottom: 15px;">🔒 【能量封印】</p>
-                        <p style="color: rgba(212, 175, 55, 0.6); font-size: 0.9em; margin-bottom: 20px;">以下内容已被封印，付费解锁后可见</p>
-                        <div style="filter: blur(8px); user-select: none; color: rgba(180, 180, 180, 0.4); line-height: 1.8; font-size: 0.95em;">
-                            <p>Day 8-9 能量蓄水：████████████████████</p>
-                            <p>Day 10-11 杠杆显化：████████████████████</p>
-                            <p>Day 12-13 闭环收割：████████████████████</p>
-                            <p style="margin-top: 15px;">创始人寄语：████████████████████████████</p>
-                        </div>
-                    </div>
-                `;
-                resultContainer.appendChild(sealArea);
-                
                 // 添加VIP能量解锁卡
                 const ctaCard = document.createElement('div');
                 ctaCard.className = 'cta-card';
@@ -590,7 +573,7 @@
                     <div style="text-align: center; margin-top: 20px;">
                         <img src="pay_qr.jpg" id="pay-qr" style="display: block !important; margin: 20px auto; width: 220px; border: 2px solid #D4AF37; border-radius: 12px; box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);">
                     </div>
-                    <p style="text-align: center; margin-top: 15px; color: #d4af37; font-weight: bold; font-size: 1em;">👇 扫码支付 ¥19.9，截图发送至后台即刻解锁</p>
+                    <p style="text-align: center; margin-top: 15px; color: #d4af37; font-weight: bold; font-size: 1em;">👇 扫码支付 ¥19.9，截图发送至微信即刻解锁</p>
                     <p style="text-align: center; margin-top: 8px; color: #64c8c8; font-size: 0.85em;">微信搜索：【艺序·AI创业实战】</p>
                 `;
                 resultContainer.appendChild(ctaCard);
