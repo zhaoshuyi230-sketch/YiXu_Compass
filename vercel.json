@@ -2,22 +2,22 @@
   "version": 2,
   "builds": [
     {
-      "src": "app.py",
+      "src": "app_simple.py",
       "use": "@vercel/python",
       "config": {
         "pythonVersion": "3.11",
-        "includeFiles": ["index.html", "*.jpg", "*.png", "*.jpeg", "maya_kin.py", "content_library.py"]
+        "includeFiles": ["index.html", "*.jpg", "*.png", "*.jpeg"]
       }
     }
   ],
   "routes": [
     {
       "src": "/",
-      "dest": "app.py"
+      "dest": "app_simple.py"
     },
     {
       "src": "/generate_report",
-      "dest": "app.py"
+      "dest": "app_simple.py"
     },
     {
       "src": "/(.*\.(jpg|jpeg|png|gif|webp))",
