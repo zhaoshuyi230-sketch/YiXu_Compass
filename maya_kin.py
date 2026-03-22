@@ -6,13 +6,13 @@ import httpx
 # 1. 初始化 DeepSeek 客户端（使用你在 Vercel 填的暗号）
 try:
     client = OpenAI(
-        api_key=os.environ.get("OPENAI_API_KEY"), 
+        api_key=os.environ.get("DEEPSEEK_API_KEY"), 
         base_url="https://api.deepseek.com/v1",
         http_client=httpx.Client()
     )
     API_AVAILABLE = True
 except Exception as e:
-    print(f"API 初始化失败: {e}")
+    print(f"API 初始化失败: {str(e)}")
     print("将使用保底模式运行")
     API_AVAILABLE = False
 
