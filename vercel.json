@@ -4,13 +4,24 @@
     {
       "src": "app.py",
       "use": "@vercel/python",
-      "config": { "includeFiles": ["index.html", "*.jpg", "*.png", "*.jpeg"] }
+      "config": {
+        "pythonVersion": "3.11",
+        "includeFiles": ["index.html", "*.jpg", "*.png", "*.jpeg", "maya_kin.py", "content_library.py"]
+      }
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "/",
       "dest": "app.py"
+    },
+    {
+      "src": "/generate_report",
+      "dest": "app.py"
+    },
+    {
+      "src": "/(.*\.(jpg|jpeg|png|gif|webp))",
+      "dest": "$1"
     }
   ]
 }
