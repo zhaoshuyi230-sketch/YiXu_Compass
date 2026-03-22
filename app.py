@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, send_file
 import maya_kin
 import os
 
@@ -9,6 +9,16 @@ def index():
     # 直接返回index.html
     with open('index.html', 'r', encoding='utf-8') as f:
         return f.read()
+
+@app.route('/<path:filename>')
+def serve_static(filename):
+    # 处理静态文件（图片等）
+    if filename.endswith(('.jpg', '.jpeg', '.png', '.gif', '.webp')):
+        try:
+            return send_file(filename)
+        except:
+            pass
+    return "Not Found", 404
 
 @app.route('/generate_report', methods=['POST'])
 def generate_report():
