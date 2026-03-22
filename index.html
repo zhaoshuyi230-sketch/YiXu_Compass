@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>财富天赋罗盘</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -456,12 +457,11 @@
             }
         }
         
-        // 动态文案轮播
+        // 动态文案轮播 - 分阶段展示
         const loadingMessages = [
-            '正在连接 KIN 玛雅时空节点...',
-            'AI 正在深度解码你的商业基因序列...',
-            '正在从 20 个维度对比顶级创业者模型...',
-            '能量校准完成，正在生成你的破局蓝图...'
+            '正在链接宇宙玛雅历法数据库...',
+            '正在解析您的商业基因序列...',
+            '为您匹配最省力的搞钱路径...'
         ];
         let messageIndex = 0;
         let messageInterval;
@@ -471,6 +471,7 @@
             messageIndex = 0;
             textElement.textContent = loadingMessages[messageIndex];
             
+            // 每2秒切换一次文案（0-2秒、2-4秒、4-6秒）
             messageInterval = setInterval(() => {
                 messageIndex = (messageIndex + 1) % loadingMessages.length;
                 textElement.style.opacity = '0';
@@ -478,7 +479,7 @@
                     textElement.textContent = loadingMessages[messageIndex];
                     textElement.style.opacity = '1';
                 }, 300);
-            }, 2500);
+            }, 2000);
         }
         
         function stopTextRotation() {
@@ -555,6 +556,94 @@
                 const kinMatch = markdown.match(/主图腾：([^\s]+)\s*[-–—]/);
                 const kinName = kinMatch ? kinMatch[1] : '';
                 const greeting = kinName ? `亲爱的${kinName}印记持有者` : '亲爱的创业者';
+                
+                // 添加金句展示（社交货币属性）
+                const goldenQuotes = {
+                    '红龙': '红龙：在废墟中重生，在黎明前觉醒',
+                    '白风': '白风：用呼吸创造奇迹，用语言改变世界',
+                    '蓝夜': '蓝夜：在黑暗中看见光，在寂静中听见真理',
+                    '黄种子': '黄种子：不在低谷退场，只在顶峰相见',
+                    '红蛇': '红蛇：用直觉穿透迷雾，用行动定义未来',
+                    '白世界桥': '白世界桥：跨越生死界限，连接无限可能',
+                    '蓝手': '蓝手：用双手雕刻梦想，用匠心铸就传奇',
+                    '黄星星': '黄星星：在平凡中发现美，在黑暗中点亮光',
+                    '红月': '红月：用情感滋养生命，用直觉指引方向',
+                    '白狗': '白狗：用真心换取信任，用忠诚赢得永恒',
+                    '蓝猴': '蓝猴：在游戏中寻找真理，在欢笑中释放灵魂',
+                    '黄人': '黄人：用智慧点亮人生，用选择定义命运',
+                    '红天行者': '红天行者：跨越时空边界，探索无限可能',
+                    '巫师': '巫师：用魔法改变现实，用直觉洞察未来',
+                    '蓝鹰': '蓝鹰：从高空俯瞰世界，用视野创造奇迹',
+                    '黄战士': '黄战士：在挑战中成长，在战斗中觉醒',
+                    '红地球': '红地球：脚踏实地前行，用行动改变世界',
+                    '白镜子': '白镜子：在反射中发现真相，在镜像中看见自己',
+                    '蓝风暴': '蓝风暴：在变革中寻找机遇，在风暴中创造新生',
+                    '太阳': '太阳：用光芒照亮世界，用温暖治愈心灵',
+                    '红龙': '红龙：在废墟中重生，在黎明前觉醒',
+                    '白风': '白风：用呼吸创造奇迹，用语言改变世界',
+                    '蓝夜': '蓝夜：在黑暗中看见光，在寂静中听见真理',
+                    '黄种子': '黄种子：不在低谷退场，只在顶峰相见'
+                };
+                
+                const goldenQuote = goldenQuotes[kinName] || `${kinName}：用天赋创造财富，用行动定义人生`;
+                
+                const quoteCard = document.createElement('div');
+                quoteCard.className = 'quote-card';
+                quoteCard.style.cssText = `
+                    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(10, 10, 10, 0.9) 100%);
+                    border: 2px solid #D4AF37;
+                    border-radius: 16px;
+                    padding: 24px;
+                    margin: 20px auto;
+                    max-width: 600px;
+                    text-align: center;
+                    box-shadow: 0 8px 32px rgba(212, 175, 55, 0.3);
+                    backdrop-filter: blur(10px);
+                `;
+                quoteCard.innerHTML = `
+                    <div style="font-size: 48px; margin-bottom: 10px;">✨</div>
+                    <h2 style="color: #D4AF37; font-size: 1.5em; margin: 0 0 15px 0; font-weight: bold; text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);">
+                        ${goldenQuote}
+                    </h2>
+                    <p style="color: #a67c00; font-size: 0.9em; margin: 0 0 15px 0;">
+                        📸 截图分享，让更多人发现你的财富天赋
+                    </p>
+                    <button id="sharePosterBtn" style="
+                        background: linear-gradient(135deg, #D4AF37 0%, #F4C430 100%);
+                        color: #1a1a1a;
+                        border: none;
+                        border-radius: 8px;
+                        padding: 12px 24px;
+                        font-size: 1em;
+                        font-weight: bold;
+                        cursor: pointer;
+                        box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4);
+                        transition: all 0.3s ease;
+                    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        🎨 生成分享海报
+                    </button>
+                `;
+                
+                // 添加分享海报功能
+                document.getElementById('sharePosterBtn').addEventListener('click', async function() {
+                    try {
+                        const canvas = await html2canvas(quoteCard, {
+                            backgroundColor: '#1a1a1a',
+                            scale: 2,
+                            useCORS: true,
+                            logging: false
+                        });
+                        
+                        const link = document.createElement('a');
+                        link.download = `艺序财富罗盘-${kinName}.png`;
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                    } catch (error) {
+                        console.error('生成海报失败:', error);
+                        alert('海报生成失败，请直接截图分享');
+                    }
+                });
+                resultContainer.insertBefore(quoteCard, resultContainer.firstChild);
                 
                 // 添加VIP能量解锁卡
                 const ctaCard = document.createElement('div');
