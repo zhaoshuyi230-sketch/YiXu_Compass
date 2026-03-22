@@ -556,25 +556,24 @@
                 const mainTotem = kinMatch ? kinMatch[1] : '';
                 const totemText = mainTotem ? `你的${mainTotem}` : '你的天赋';
                 
-                // 添加付费转化卡片
+                // 添加VIP能量解锁卡
                 const ctaCard = document.createElement('div');
                 ctaCard.className = 'cta-card';
+                ctaCard.style.background = 'linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(10, 10, 10, 0.95) 100%)';
+                ctaCard.style.backdropFilter = 'blur(10px)';
                 ctaCard.innerHTML = `
-                    <h3>💎 你的财富基因，值得一次"深度觉醒"</h3>
-                    <p style="margin-bottom: 15px;">上方的罗盘是"天命"，而接下来的实战落地是"人谋"。</p>
-                    <p style="margin-bottom: 10px;">🎁 <strong>【限时福利 · 艺序 AI 创业实战内测】</strong></p>
+                    <h3>� 你的财富风暴，只解锁了 50%</h3>
+                    <p style="margin-bottom: 15px; color: #a67c00;">Day 8-13 的闭环收割行动和创始人专属寄语已被能量封印。</p>
+                    <p style="margin-bottom: 10px;">🎁 <strong>【限时福利 · 全自动内测】</strong></p>
                     <p style="margin-bottom: 15px;">只需 <span class="highlight">¥19.9</span>（原价 ¥199），即可获取：</p>
-                    <p style="margin-left: 20px; margin-bottom: 8px;">✅ 《一人公司·AI 落地启动方案》（PDF 简版）</p>
+                    <p style="margin-left: 20px; margin-bottom: 8px;">✅ 完整 Day 1-13 实战破局行动指南（解锁最终"收割"环节）</p>
                     <p style="margin-left: 20px; margin-bottom: 8px;">✅ 主理人 1v1 专属商业基因拆解（针对你的印记给出 3 条具体赛道）</p>
-                    <p style="margin-left: 20px; margin-bottom: 15px;">✅ 艺序首批"实战派"校友社群入场券</p>
-                    <p style="margin-top: 15px; margin-bottom: 8px;"><strong>操作指引：</strong></p>
-                    <p style="margin-bottom: 5px;">1. 截图保存你的罗盘报告</p>
-                    <p style="margin-bottom: 5px;">2. 扫描下方二维码添加主理人</p>
-                    <p style="margin-bottom: 15px;">3. 发送截图并支付 ¥19.9，即刻开启你的 AI 创业首秀</p>
+                    <p style="margin-left: 20px; margin-bottom: 15px;">✅ 《一人公司·AI 落地启动方案》（PDF 简版）</p>
                     <div style="text-align: center; margin-top: 20px;">
-                        <img id="pay-qr" src="微信图片pay_qr.jpg" alt="微信二维码" style="width: 180px; height: 180px; border: 2px solid #d4af37; border-radius: 10px; display: block; margin: 0 auto;">
-                        <p style="margin-top: 10px; color: #a67c00; font-size: 0.9em;">或搜索微信：【艺序·AI创业实战】</p>
+                        <img id="pay-qr" src="微信图片pay_qr.jpg" alt="微信支付二维码" style="width: 200px; height: 200px; border: 2px solid #d4af37; border-radius: 10px; display: block; margin: 15px auto; box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);">
                     </div>
+                    <p style="text-align: center; margin-top: 15px; color: #d4af37; font-weight: bold; font-size: 1em;">👇 扫码支付 ¥19.9，截图发送给主理人即刻解锁</p>
+                    <p style="text-align: center; margin-top: 8px; color: #64c8c8; font-size: 0.85em;">微信搜索：【艺序·AI创业实战】</p>
                 `;
                 resultContainer.appendChild(ctaCard);
                 
