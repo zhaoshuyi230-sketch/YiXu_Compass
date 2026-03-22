@@ -553,13 +553,14 @@
                 
                 // 提取主图腾名称
                 const kinMatch = markdown.match(/主图腾：([^\s]+)\s*[-–—]/);
-                const mainTotem = kinMatch ? kinMatch[1] : '你的天赋';
+                const mainTotem = kinMatch ? kinMatch[1] : '';
+                const totemText = mainTotem ? `你的${mainTotem}` : '你的天赋';
                 
                 // 添加引流转化卡片
                 const ctaCard = document.createElement('div');
                 ctaCard.className = 'cta-card';
                 ctaCard.innerHTML = `
-                    <h3>🎁 【限时福利】想知道你的${mainTotem}能量如何变现？</h3>
+                    <h3>🎁 【限时福利】想知道${totemText}能量如何变现？</h3>
                     <p>每天仅限 <span class="highlight">3 位</span> 幸运战士，由艺序主理人亲自进行 1v1 商业基因拆解。</p>
                     <p>截图保存你的罗盘，添加微信/小红书：<span class="highlight">【艺序·AI创业实战】</span></p>
                     <p>发送截图 + 你的职业，获取一份价值 <span class="highlight">999 元</span> 的《一人公司·AI落地启动方案》。</p>
