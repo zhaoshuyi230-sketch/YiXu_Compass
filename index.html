@@ -553,7 +553,24 @@
                 
                 // 提取主图腾名称
                 const kinMatch = markdown.match(/主图腾：([^\s]+)\s*[-–—]/);
-                const mainTotem = kinMatch ? kinMatch[1] : '你的天赋';
+                const kinName = kinMatch ? kinMatch[1] : '你的天赋';
+                
+                // 添加封印占位区域（模糊效果）
+                const sealArea = document.createElement('div');
+                sealArea.className = 'seal-area';
+                sealArea.innerHTML = `
+                    <div style="text-align: center; padding: 30px 20px; background: linear-gradient(135deg, rgba(20, 20, 20, 0.9) 0%, rgba(40, 30, 10, 0.8) 100%); border-radius: 15px; border: 1px solid rgba(212, 175, 55, 0.3); margin: 20px 0;">
+                        <p style="font-size: 1.2em; color: #d4af37; margin-bottom: 15px;">🔒 【能量封印】</p>
+                        <p style="color: rgba(212, 175, 55, 0.6); font-size: 0.9em; margin-bottom: 20px;">以下内容已被封印，付费解锁后可见</p>
+                        <div style="filter: blur(8px); user-select: none; color: rgba(180, 180, 180, 0.4); line-height: 1.8; font-size: 0.95em;">
+                            <p>Day 8-9 能量蓄水：████████████████████</p>
+                            <p>Day 10-11 杠杆显化：████████████████████</p>
+                            <p>Day 12-13 闭环收割：████████████████████</p>
+                            <p style="margin-top: 15px;">创始人寄语：████████████████████████████</p>
+                        </div>
+                    </div>
+                `;
+                resultContainer.appendChild(sealArea);
                 
                 // 添加VIP能量解锁卡
                 const ctaCard = document.createElement('div');
@@ -562,13 +579,13 @@
                 ctaCard.style.backdropFilter = 'blur(10px)';
                 ctaCard.innerHTML = `
                     <h3>🔒 警告：你的财富美学仅完成了"策展"，尚未"变现"</h3>
-                    <p style="margin-bottom: 15px; color: #a67c00;">亲爱的${mainTotem}，Day 1-7 让你看清了美，但 Day 8-13 才是教你如何把美变成真金白银。</p>
+                    <p style="margin-bottom: 15px; color: #a67c00;">亲爱的 ${kinName}，Day 1-7 只是让你看清了"势"，而 Day 8-13 才是教你如何"取财"。</p>
                     <p style="margin-bottom: 10px;">没有后半段的"闭环收割"，你的商业罗盘只是一张精美的艺术废纸。</p>
                     <p style="margin-bottom: 10px;">🎁 <strong>【限时福利 · 艺序首款产品创世内测】</strong></p>
                     <p style="margin-bottom: 15px;">只需 <span class="highlight">¥19.9</span>（一杯奶茶钱，解锁你的商业闭环）：</p>
-                    <p style="margin-left: 20px; margin-bottom: 8px;">✅ 解锁封印：获取 Day 8-13 核心收割行动 + 创始人深度寄语</p>
-                    <p style="margin-left: 20px; margin-bottom: 8px;">✅ 对标实战：深度拆解 3 个 AI 时代最适合你的"轻资产"赛道</p>
-                    <p style="margin-left: 20px; margin-bottom: 15px;">✅ AI 赋能：主理人 1v1 语音拆解，教你如何用 AI 把"美感"变成自动化赚钱机器</p>
+                    <p style="margin-left: 20px; margin-bottom: 8px;">✅ 解锁封印：获取 Day 8-13 核心收割行动 + 创始人避坑实战私藏寄语</p>
+                    <p style="margin-left: 20px; margin-bottom: 8px;">✅ 赛道精准对标：由主理人基于 AI 模型，为你匹配 3 个当下最能起量的 AI 变现赛道</p>
+                    <p style="margin-left: 20px; margin-bottom: 15px;">✅ 实战手册：赠送《一人公司·AI 零成本起步工具箱》电子版</p>
                     <div style="text-align: center; margin-top: 20px;">
                         <img src="pay_qr.jpg" id="pay-qr" style="display: block !important; margin: 20px auto; width: 220px; border: 2px solid #D4AF37; border-radius: 12px; box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);">
                     </div>
@@ -584,6 +601,9 @@
                 backButton.textContent = '重新测算';
                 backButton.onclick = () => location.reload();
                 resultContainer.appendChild(backButton);
+                
+                // 自动滚动到报告开头
+                resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 
                 // 添加到页面
                 document.body.appendChild(resultContainer);
