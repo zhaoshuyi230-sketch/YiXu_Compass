@@ -75,7 +75,7 @@ SYSTEM_PROMPT = """
 **【格式要求】** 在输出【顺势而为的 13 天破局行动】的 Day 1-3 和 Day 4-7 时，必须使用清晰的 Markdown 无序列表（- 或 *）或换行，确保每一个行动步骤独立成行，不要挤成一堆。
 """
 
-# 3. 这里的函数是给 app.py 调用的“发动机”
+# 3. 这里的函数是给 app.py 调用的"发动机"
 def generate_report(kin_name):
     try:
         # 初始化 API 客户端
@@ -90,9 +90,9 @@ def generate_report(kin_name):
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": f"请为玛雅印记【{kin_name}】生成专属的《个人商业出厂说明书》。"}
             ],
-            stream=False
+            stream=True
         )
-        return response.choices[0].message.content
+        return response
     except Exception as e:
         return f"生成失败，原因：{str(e)}"
 
