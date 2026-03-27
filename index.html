@@ -645,9 +645,6 @@
                 resultContainer.className = 'result-container';
                 resultContainer.id = 'result';
                 
-                // 使用marked解析Markdown
-                resultContainer.innerHTML = marked.parse(fullContent);
-                
                 // 提取主图腾名称
                 const kinMatch = fullContent.match(/主图腾：([^\s]+)\s*[-–—]/);
                 const kinName = kinMatch ? kinMatch[1] : '';
@@ -715,14 +712,49 @@
                 `;
                 
                 // 插入金句卡片
-                const firstElement = resultContainer.firstChild;
-                resultContainer.insertBefore(quoteCard, firstElement);
+                resultContainer.appendChild(quoteCard);
+                
+                // 创建内容容器
+                const contentContainer = document.createElement('div');
+                contentContainer.className = 'content-container';
+                contentContainer.style.cssText = `
+                    background: rgba(10, 10, 10, 0.8);
+                    border: 1px solid #333;
+                    border-radius: 12px;
+                    padding: 30px;
+                    margin: 0 auto;
+                    max-width: 800px;
+                    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+                `;
+                
+                // 先添加空内容，然后通过打字机效果逐字显示
+                contentContainer.innerHTML = '<div id="reportContent"></div>';
+                
+                // 添加到结果容器
+                resultContainer.appendChild(contentContainer);
                 
                 // 添加到页面
                 document.body.appendChild(resultContainer);
                 
                 // 平滑滚动到结果
                 resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                // 实现打字机效果
+                const reportContent = document.getElementById('reportContent');
+                const parsedContent = marked.parse(fullContent);
+                let index = 0;
+                const typingSpeed = 5; // 打字速度（毫秒/字符）
+                
+                function typeWriter() {
+                    if (index < parsedContent.length) {
+                        reportContent.innerHTML = parsedContent.substring(0, index + 1);
+                        index++;
+                        setTimeout(typeWriter, typingSpeed);
+                    }
+                }
+                
+                // 开始打字机效果
+                typeWriter();
             }
             
             // 激活码验证按钮事件
