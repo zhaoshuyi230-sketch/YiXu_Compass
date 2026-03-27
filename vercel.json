@@ -1,5 +1,10 @@
 {
   "version": 2,
+  "functions": {
+    "api/report.js": {
+      "runtime": "edge"
+    }
+  },
   "builds": [
     {
       "src": "app.py",

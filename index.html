@@ -881,12 +881,20 @@
             // 发送请求（使用 Edge Runtime API，支持流式传输）
             const requestData = { year, month, day };
             
+            // 创建 AbortController 用于超时控制
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => {
+                controller.abort();
+                console.log('请求超时，已中止');
+            }, 60000); // 60 秒超时
+            
             fetch('/api/report', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(requestData)
+                body: JSON.stringify(requestData),
+                signal: controller.signal
             })
             .then(async response => {
                 if (!response.ok) {
@@ -949,9 +957,15 @@
                 } catch (streamError) {
                     console.error('流式读取错误:', streamError);
                     throw streamError;
+                } finally {
+                    // 清除超时定时器
+                    clearTimeout(timeoutId);
                 }
             })
             .catch(error => {
+                // 清除超时定时器
+                clearTimeout(timeoutId);
+                
                 console.error('Error:', error);
                 
                 // 停止粒子效果
