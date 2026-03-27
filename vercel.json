@@ -17,10 +17,6 @@
   ],
   "routes": [
     {
-      "src": "/api/report",
-      "dest": "/api/report.js"
-    },
-    {
       "src": "/",
       "dest": "app.py"
     },

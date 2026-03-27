@@ -1,0 +1,11 @@
+{
+  "name": "yixu-compass",
+  "version": "1.0.0",
+  "description": "艺序·商业潜能解码器",
+  "scripts": {
+    "start": "python3 app.py"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
