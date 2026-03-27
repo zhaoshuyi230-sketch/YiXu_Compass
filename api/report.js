@@ -191,7 +191,15 @@ export default async function handler(request) {
   }
 
   try {
-    const { year, month, day } = await request.json();
+    let { year, month, day } = request.body;
+    
+    // 如果 body 是字符串，需要解析
+    if (typeof request.body === 'string') {
+      const body = JSON.parse(request.body);
+      year = body.year;
+      month = body.month;
+      day = body.day;
+    }
     
     if (!year || !month || !day) {
       return new Response(JSON.stringify({ error: '请提供完整的日期' }), {
