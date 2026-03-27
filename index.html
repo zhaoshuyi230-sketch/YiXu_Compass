@@ -878,19 +878,81 @@
             formData.append('month', month);
             formData.append('day', day);
             
-            // 发送请求（使用普通方式，兼容性更好）
-            fetch('/generate_report', {
+            // 发送请求（使用 Edge Runtime API，支持流式传输）
+            const requestData = { year, month, day };
+            
+            fetch('/api/report', {
                 method: 'POST',
-                body: formData
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
             })
-            .then(response => {
+            .then(async response => {
                 if (!response.ok) {
                     throw new Error('网络响应异常');
                 }
-                return response.text();
+                
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let fullContent = '';
+                let kinName = '';
+                let kinNumber = 0;
+                
+                try {
+                    while (true) {
+                        const { done, value } = await reader.read();
+                        if (done) break;
+                        
+                        const chunk = decoder.decode(value, { stream: true });
+                        const lines = chunk.split('\n').filter(line => line.trim());
+                        
+                        for (const line of lines) {
+                            try {
+                                const data = JSON.parse(line);
+                                
+                                if (data.type === 'start') {
+                                    kinName = data.kin_name;
+                                    kinNumber = data.kin_number;
+                                    console.log('开始生成报告:', kinName, kinNumber);
+                                } else if (data.type === 'content') {
+                                    fullContent += data.content;
+                                    // 实时更新进度文字
+                                    updateLoadingText();
+                                } else if (data.type === 'complete') {
+                                    fullContent = data.content || fullContent;
+                                } else if (data.type === 'error') {
+                                    console.error('API 错误:', data.message);
+                                    if (data.fallback) {
+                                        fullContent = data.fallback;
+                                    }
+                                }
+                            } catch (e) {
+                                console.error('解析数据失败:', e, line);
+                            }
+                        }
+                    }
+                    
+                    // 停止粒子效果
+                    stopParticles();
+                    
+                    // 停止文字轮播
+                    stopTextRotation();
+                    
+                    // 隐藏 Loading 动画
+                    document.getElementById('loadingOverlay').classList.remove('active');
+                    document.getElementById('submitBtn').disabled = false;
+                    
+                    // 显示激活码验证界面
+                    showActivationOverlay(fullContent);
+                    
+                } catch (streamError) {
+                    console.error('流式读取错误:', streamError);
+                    throw streamError;
+                }
             })
-            .then(markdown => {
-                console.log('报告生成完成');
+            .catch(error => {
+                console.error('Error:', error);
                 
                 // 停止粒子效果
                 stopParticles();
@@ -902,15 +964,24 @@
                 document.getElementById('loadingOverlay').classList.remove('active');
                 document.getElementById('submitBtn').disabled = false;
                 
-                // 显示激活码验证界面
-                showActivationOverlay(markdown);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('生成报告失败，请重试');
-                document.getElementById('loadingOverlay').classList.remove('active');
-                document.getElementById('submitBtn').disabled = false;
+                // 显示友好错误提示
+                alert('宇宙信号波动，请重新测算');
             });
+            
+            // 更新加载文字的函数
+            function updateLoadingText() {
+                const progressTexts = [
+                    '正在接入玛雅 KIN 能量场...',
+                    '正在解码你的商业基因序列...',
+                    'AI 导师正在为你拨动财富指针...',
+                    '正在匹配最佳搞钱路径...'
+                ];
+                const loadingText = document.getElementById('loadingText');
+                if (loadingText) {
+                    const randomIndex = Math.floor(Math.random() * progressTexts.length);
+                    loadingText.textContent = progressTexts[randomIndex];
+                }
+            }
         });
     </script>
     <div style="text-align: center; margin-top: 50px; padding: 20px; font-size: 0.8em; color: #666;">
