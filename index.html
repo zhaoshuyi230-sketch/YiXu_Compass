@@ -965,34 +965,29 @@
                         // 启动文字轮播
                         startTextRotation();
                         
-                        // 发送请求（使用 Edge Runtime API，支持流式传输）
+                        // 发送请求（v4.0 强力探针版本）
                         const requestData = { year, month, day };
                         
-                        // 使用相对路径，确保在任何环境下都能正确访问
-                        const apiUrl = '/api/report';
-                        console.log('正在请求 API:', apiUrl);
-                        console.log('请求数据:', requestData);
-                        
-                        // 极简测试：直接写死，不要任何花里胡哨的打字机解析
-                        console.log("【极简测试 v3.0】请求已发出！");
-                        const response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(requestData)
-                        });
-                        
-                        console.log('拿到后端响应，状态码:', response.status);
-                        
-                        if (!response.ok) {
-                            const errorText = await response.text();
-                            console.error('API 错误响应:', errorText);
-                            throw new Error(`网络响应异常: ${response.status} - ${errorText}`);
+                        try {
+                            console.log("【v4.0 强力探针】准备发送请求...");
+                            console.log("【v4.0】请求数据:", requestData);
+                            
+                            const response = await fetch('/api/report', { 
+                                method: 'POST', 
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify(requestData) 
+                            });
+                            
+                            console.log("【v4.0】拿到响应状态码:", response.status);
+                            const textData = await response.text(); // 强制用 text 解析，防止 404 HTML 导致 JSON 崩溃
+                            console.log("【v4.0】后端真实返回内容:", textData);
+                            alert("状态码: " + response.status + " 内容: " + textData.substring(0, 100));
+                        } catch (error) {
+                            console.error("【v4.0 致命报错】", error);
+                            alert("网络请求彻底断裂: " + error.message);
                         }
-                        
-                        const data = await response.json();
-                        alert(data.message);
                     } catch (error) {
                         console.error('请求错误:', error);
                         console.error('错误名称:', error.name);

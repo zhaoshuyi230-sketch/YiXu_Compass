@@ -1,137 +1,21 @@
-// Edge Runtime API Route - 突破 Vercel 10 秒限制
-export const runtime = 'edge';
+// Vercel Serverless Function - CommonJS syntax
+module.exports = function handler(req, res) {
+  // 1. 强制允许跨域，防止被浏览器拦截
+  res.setHeader('Access-Control-Allow-Credentials', true)
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT')
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version')
 
-// CORS 头
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
-
-// 玛雅印记数据
-const kinData = {
-  1: { name: '红龙', emoji: '🐉' },
-  2: { name: '白风', emoji: '🌬️' },
-  3: { name: '蓝夜', emoji: '🌙' },
-  4: { name: '黄种子', emoji: '🌱' },
-  5: { name: '红蛇', emoji: '🐍' },
-  6: { name: '白世界桥', emoji: '🌉' },
-  7: { name: '蓝手', emoji: '✋' },
-  8: { name: '黄星星', emoji: '⭐' },
-  9: { name: '红月', emoji: '🌕' },
-  10: { name: '白狗', emoji: '🐕' },
-  11: { name: '蓝猴', emoji: '🐒' },
-  12: { name: '黄人', emoji: '👤' },
-  13: { name: '红天行者', emoji: '🚶' },
-  14: { name: '白巫师', emoji: '🧙' },
-  15: { name: '蓝鹰', emoji: '🦅' },
-  16: { name: '黄战士', emoji: '⚔️' },
-  17: { name: '红地球', emoji: '🌍' },
-  18: { name: '白镜子', emoji: '🪞' },
-  19: { name: '蓝风暴', emoji: '⛈️' },
-  20: { name: '黄太阳', emoji: '☀️' }
-};
-
-// 计算玛雅印记
-function calculateKin(year, month, day) {
-  const baseDate = new Date(1900, 0, 1);
-  const targetDate = new Date(year, month - 1, day);
-  const diffDays = Math.floor((targetDate - baseDate) / (1000 * 60 * 60 * 24));
-  const kinNumber = ((diffDays % 260) + 260) % 260 + 1;
-  return kinNumber;
-}
-
-// 生成系统提示词
-function generateSystemPrompt(kinName, kinNumber) {
-  return `你是一位世界顶级的灵性财富教练和荣格心理学大师，精通古玛雅历法与现代商业变现的底层逻辑。
-
-请为玛雅印记【KIN ${kinNumber} ${kinName}】生成一份极具洞察力的《个人商业出厂说明书》。
-
-**语气要求**：
-- 一针见血、犀利不爹味、带有神秘的高级感
-- 像一位看透人性的顶尖商业顾问
-- 绝对禁止说"建立个人品牌"、"做MVP"这种正确的废话
-
-**必须包含的板块**：
-1. 🌌 五大财富能量阵（主图腾、指引图腾、支持图腾、挑战图腾、隐藏图腾）
-2. 🧬 核心商业基因解码（搞钱超能力 + 致命漏财点）
-3. 🚫 绝不可碰的商业红线（3条具体场景）
-4. 🤝 天作之合与避坑合伙人
-5. 🚀 顺势而为的13天破局行动（Day 1-7，Day 8-13标记为需解锁）
-
-**输出格式**：使用 Markdown 格式，适当使用 Emoji 增加视觉吸引力。`;
-}
-
-// 保底内容
-function getFallbackContent(kinName, kinNumber) {
-  return `# 🌟 艺序 · 商业潜能解码器
-
-## 你的专属印记：KIN ${kinNumber} ${kinName}
-
-> "宇宙正在向你传递财富信号..."
-
-### 🌌 五大财富能量阵
-
-- **主图腾**：${kinName} - 天生的财富创造者
-- **指引图腾**：宇宙能量指引你前行
-- **支持图腾**：隐藏的支持力量正在觉醒
-- **挑战图腾**：转化挑战为机遇
-- **隐藏图腾**：深藏的潜能等待释放
-
-### 🧬 核心商业基因解码
-
-**你的搞钱超能力**：
-${kinName}印记的你拥有独特的商业直觉，能够洞察他人看不到的机会。
-
-**你最致命的漏财点**：
-过于追求完美，错失最佳时机。
-
-### 🚫 绝不可碰的商业红线
-
-1. 🧨 **重资产投入** - 轻资产才是你的主场
-2. 🧨 **单打独斗** - 你需要互补的合伙人
-3. 🧨 **忽视直觉** - 你的第六感是最大财富
-
-### 🚀 13天破局行动
-
-**Day 1-3：能量校准**
-- 清理物理和数字空间
-- 列出你的3个核心技能
-
-**Day 4-7：价值显化**
-- 设计你的最小可行性产品
-- 发布第一条价值内容
-
----
-
-🔒 **Day 8-13 核心收割行动**
-*输入激活码解锁完整版报告*
-
----
-
-*本报告由艺序 AI 实验室生成*
-*微信搜索：【艺序·AI创业实战】*`;
-}
-
-export default async function handler(request) {
-  // 处理 CORS 预检请求
-  if (request.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+  // 2. 处理预检请求
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end()
   }
 
-  if (request.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-      status: 405,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    });
+  // 3. 处理核心 POST 请求
+  if (req.method === 'POST') {
+    return res.status(200).json({ message: "【后端核爆测试】API通道完全畅通！Vercel已苏醒！" })
   }
 
-  // 极简测试：直接返回最简单的标准响应
-  return new Response(
-    JSON.stringify({ message: "【后端核爆测试】API通道完全畅通！" }), 
-    { 
-      status: 200,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-    }
-  );
+  // 4. 其他请求拦截
+  return res.status(405).json({ error: "Method not allowed" })
 }

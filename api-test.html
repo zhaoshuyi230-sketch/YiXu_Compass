@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API测试</title>
+</head>
+<body>
+    <h1>API测试</h1>
+    <button onclick="testAPI()">测试API</button>
+    <div id="result"></div>
+    
+    <script>
+        async function testAPI() {
+            try {
+                const resultDiv = document.getElementById('result');
+                resultDiv.textContent = '正在请求API...';
+                
+                console.log('开始请求 /api/test-simple');
+                const response = await fetch('/api/test-simple');
+                console.log('响应状态:', response.status);
+                
+                if (!response.ok) {
+                    throw new Error(`网络响应异常: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('响应数据:', data);
+                resultDiv.textContent = 'API测试成功: ' + data.message;
+                alert(data.message);
+            } catch (error) {
+                console.error('错误:', error);
+                document.getElementById('result').textContent = '错误: ' + error.message;
+                alert('错误: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>
