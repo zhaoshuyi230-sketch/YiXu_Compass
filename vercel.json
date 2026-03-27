@@ -3,6 +3,9 @@
   "functions": {
     "api/report.js": {
       "runtime": "edge"
+    },
+    "api/test.js": {
+      "runtime": "edge"
     }
   },
   "builds": [
