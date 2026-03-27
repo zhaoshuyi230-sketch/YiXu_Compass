@@ -590,6 +590,18 @@
     </div>
     
     <script>
+        // 全局错误处理
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            console.error('全局错误:', msg, url, lineNo, columnNo, error);
+            alert('页面发生错误: ' + msg + '\n行号: ' + lineNo);
+            return false;
+        };
+        
+        window.addEventListener('unhandledrejection', function(event) {
+            console.error('未处理的 Promise 错误:', event.reason);
+            alert('异步错误: ' + event.reason);
+        });
+        
         // 激活码列表（第一波发售验证）
         const VALID_ACTIVATION_CODES = [
             'YX-001', 'YX-002', 'YX-003', 'YX-004', 'YX-005',
@@ -888,9 +900,10 @@
                 console.log('请求超时，已中止');
             }, 60000); // 60 秒超时
             
-            // 检测 API 路径（支持相对路径和绝对路径）
-            const apiUrl = window.location.origin + '/api/report';
+            // 使用相对路径，确保在任何环境下都能正确访问
+            const apiUrl = '/api/report';
             console.log('正在请求 API:', apiUrl);
+            console.log('请求数据:', requestData);
             
             // 尝试 Edge Runtime API
             fetch(apiUrl, {
@@ -906,7 +919,7 @@
                 if (!response.ok) {
                     const errorText = await response.text();
                     console.error('API 错误响应:', errorText);
-                    throw new Error(`网络响应异常: ${response.status}`);
+                    throw new Error(`网络响应异常: ${response.status} - ${errorText}`);
                 }
                 
                 const reader = response.body.getReader();
@@ -974,7 +987,10 @@
                 // 清除超时定时器
                 clearTimeout(timeoutId);
                 
-                console.error('Error:', error);
+                console.error('请求错误:', error);
+                console.error('错误名称:', error.name);
+                console.error('错误消息:', error.message);
+                console.error('错误堆栈:', error.stack);
                 
                 // 停止粒子效果
                 stopParticles();
@@ -987,12 +1003,15 @@
                 document.getElementById('submitBtn').disabled = false;
                 
                 // 显示详细错误提示
-                let errorMsg = '宇宙信号波动，请重新测算';
+                let errorMsg = '宇宙信号波动，请重新测算\n\n';
                 if (error.name === 'AbortError') {
                     errorMsg = '请求超时，请检查网络后重试';
                 } else if (error.message && error.message.includes('Failed to fetch')) {
-                    errorMsg = '网络连接失败，请检查网络设置';
+                    errorMsg = '网络连接失败，请检查网络设置\n\n可能原因：\n1. 网络不稳定\n2. 服务器暂时不可用\n3. 需要刷新页面重试';
+                } else if (error.message) {
+                    errorMsg += '错误详情: ' + error.message;
                 }
+                
                 alert(errorMsg);
             });
             
