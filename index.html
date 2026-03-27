@@ -856,6 +856,10 @@
             
             function startTextRotation() {
                 const textElement = document.getElementById('progressText');
+                if (!textElement) {
+                    console.warn('未找到 progressText 元素，跳过文字轮播');
+                    return;
+                }
                 messageIndex = 0;
                 textElement.textContent = loadingMessages[messageIndex];
                 
@@ -873,6 +877,7 @@
             function stopTextRotation() {
                 if (messageInterval) {
                     clearInterval(messageInterval);
+                    messageInterval = null;
                 }
             }
             
