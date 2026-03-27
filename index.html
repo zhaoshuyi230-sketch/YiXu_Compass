@@ -105,6 +105,87 @@
             font-weight: bold;
             min-height: 1.5em;
         }
+        .activation-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(5, 5, 15, 0.98) 0%, rgba(15, 15, 25, 0.95) 100%);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .activation-overlay.active {
+            display: flex;
+        }
+        .activation-card {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(10, 10, 10, 0.95) 100%);
+            border: 2px solid #D4AF37;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(212, 175, 55, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        .activation-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.2em;
+            border: 2px solid #D4AF37;
+            border-radius: 10px;
+            background: rgba(10, 10, 10, 0.8);
+            color: #D4AF37;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            margin: 20px 0;
+            box-sizing: border-box;
+        }
+        .activation-input::placeholder {
+            color: #666;
+            letter-spacing: 1px;
+        }
+        .activation-input:focus {
+            outline: none;
+            border-color: #F4C430;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
+        .activation-button {
+            width: 100%;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            background: linear-gradient(135deg, #D4AF37 0%, #A67C00 100%);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+        .activation-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+        }
+        .activation-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .activation-error {
+            color: #ff4444;
+            font-size: 0.9em;
+            margin-top: 15px;
+            display: none;
+        }
+        .activation-error.show {
+            display: block;
+        }
         .compass-container {
             position: relative;
             width: 280px;
@@ -479,7 +560,109 @@
         </div>
     </div>
     
+    <!-- 激活码验证组件 -->
+    <div class="activation-overlay" id="activationOverlay">
+        <div class="activation-card">
+            <div style="font-size: 48px; margin-bottom: 20px;">🔐</div>
+            <h2 style="color: #D4AF37; margin-bottom: 10px; font-size: 1.8em;">解锁完整版报告</h2>
+            <p style="color: #a67c00; margin-bottom: 20px; font-size: 0.95em;">
+                您的专属商业潜能报告已生成<br>
+                请输入激活码查看完整内容
+            </p>
+            <input type="text" 
+                   id="activationCode" 
+                   class="activation-input" 
+                   placeholder="请输入激活码 (如: YX-001)"
+                   maxlength="10"
+                   autocomplete="off">
+            <button id="activationBtn" class="activation-button">
+                🚀 立即解锁
+            </button>
+            <div id="activationError" class="activation-error">
+                ❌ 无效的印记凭证，请联系主理人获取
+            </div>
+            <p style="color: #666; margin-top: 20px; font-size: 0.85em;">
+                💡 还没有激活码？<br>
+                扫码联系主理人获取：<br>
+                <span style="color: #D4AF37; font-weight: bold;">微信搜索：【艺序·AI创业实战】</span>
+            </p>
+        </div>
+    </div>
+    
     <script>
+        // 激活码列表（第一波发售验证）
+        const VALID_ACTIVATION_CODES = [
+            'YX-001', 'YX-002', 'YX-003', 'YX-004', 'YX-005',
+            'YX-006', 'YX-007', 'YX-008', 'YX-009', 'YX-010',
+            'YX-011', 'YX-012', 'YX-013', 'YX-014', 'YX-015',
+            'YX-016', 'YX-017', 'YX-018', 'YX-019', 'YX-020'
+        ];
+        
+        // 存储生成的报告内容
+        let pendingReportContent = null;
+        
+        // 验证激活码
+        function validateActivationCode(code) {
+            const normalizedCode = code.toUpperCase().trim();
+            return VALID_ACTIVATION_CODES.includes(normalizedCode);
+        }
+        
+        // 显示激活码验证界面
+        function showActivationOverlay(reportContent) {
+            pendingReportContent = reportContent;
+            document.getElementById('activationOverlay').classList.add('active');
+        }
+        
+        // 隐藏激活码验证界面
+        function hideActivationOverlay() {
+            document.getElementById('activationOverlay').classList.remove('active');
+            document.getElementById('activationError').classList.remove('show');
+        }
+        
+        // 激活码验证按钮事件
+        document.getElementById('activationBtn').addEventListener('click', function() {
+            const code = document.getElementById('activationCode').value;
+            const errorDiv = document.getElementById('activationError');
+            const btn = document.getElementById('activationBtn');
+            
+            if (!code.trim()) {
+                errorDiv.textContent = '❌ 请输入激活码';
+                errorDiv.classList.add('show');
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.textContent = '验证中...';
+            
+            // 模拟验证延迟
+            setTimeout(() => {
+                if (validateActivationCode(code)) {
+                    // 验证成功
+                    hideActivationOverlay();
+                    if (pendingReportContent) {
+                        displayReport(pendingReportContent);
+                        pendingReportContent = null;
+                    }
+                } else {
+                    // 验证失败
+                    errorDiv.textContent = '❌ 无效的印记凭证，请联系主理人获取';
+                    errorDiv.classList.add('show');
+                    btn.disabled = false;
+                    btn.textContent = '🚀 立即解锁';
+                    
+                    // 清空输入框
+                    document.getElementById('activationCode').value = '';
+                }
+            }, 500);
+        });
+        
+        // 回车键提交激活码
+        document.getElementById('activationCode').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('activationBtn').click();
+            }
+        });
+        
         // 生成年份选项
         const yearSelect = document.getElementById('year');
         const currentYear = new Date().getFullYear();
@@ -641,6 +824,12 @@
                     document.getElementById('loadingOverlay').classList.remove('active');
                     document.getElementById('submitBtn').disabled = false;
                     
+                    // 显示激活码验证界面
+                    showActivationOverlay(fullContent);
+                }
+                
+                // 显示报告内容
+                function displayReport(fullContent) {
                     // 隐藏表单容器
                     document.querySelector('.container').style.display = 'none';
                     
