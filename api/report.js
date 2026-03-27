@@ -62,70 +62,6 @@ function generateSystemPrompt(kinName, kinNumber) {
 **输出格式**：使用 Markdown 格式，适当使用 Emoji 增加视觉吸引力。`;
 }
 
-// 流式生成报告
-async function* streamReport(kinName, kinNumber, apiKey) {
-  const systemPrompt = generateSystemPrompt(kinName, kinNumber);
-  
-  try {
-    const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: `请为玛雅印记【${kinName}】生成专属的《个人商业出厂说明书》。` }
-        ],
-        stream: true,
-        temperature: 0.8,
-        max_tokens: 4000
-      })
-    });
-
-    if (!response.ok) {
-      throw new Error(`API 请求失败: ${response.status}`);
-    }
-
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder();
-    let fullContent = '';
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-
-      const chunk = decoder.decode(value, { stream: true });
-      const lines = chunk.split('\n');
-
-      for (const line of lines) {
-        if (line.startsWith('data: ')) {
-          const data = line.substring(6);
-          if (data === '[DONE]') continue;
-          
-          try {
-            const parsed = JSON.parse(data);
-            const content = parsed.choices?.[0]?.delta?.content;
-            if (content) {
-              fullContent += content;
-              yield { type: 'content', content };
-            }
-          } catch (e) {
-            // 忽略解析错误
-          }
-        }
-      }
-    }
-
-    yield { type: 'complete', content: fullContent };
-  } catch (error) {
-    console.error('Stream error:', error);
-    yield { type: 'error', message: error.message };
-  }
-}
-
 // 保底内容
 function getFallbackContent(kinName, kinNumber) {
   return `# 🌟 艺序 · 商业潜能解码器
@@ -244,12 +180,67 @@ export default async function handler(request) {
             )
           );
 
-          // 流式生成内容
-          for await (const chunk of streamReport(kinName, kinNumber, apiKey)) {
-            controller.enqueue(
-              new TextEncoder().encode(JSON.stringify(chunk) + '\n')
-            );
+          // 调用大模型 API
+          const systemPrompt = generateSystemPrompt(kinName, kinNumber);
+          const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+              model: 'deepseek-chat',
+              messages: [
+                { role: 'system', content: systemPrompt },
+                { role: 'user', content: `请为玛雅印记【${kinName}】生成专属的《个人商业出厂说明书》。` }
+              ],
+              stream: true,
+              temperature: 0.8,
+              max_tokens: 4000
+            })
+          });
+
+          if (!response.ok) {
+            throw new Error(`API 请求失败: ${response.status}`);
           }
+
+          // 处理流式响应
+          const reader = response.body.getReader();
+          const decoder = new TextDecoder();
+          let fullContent = '';
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            const chunk = decoder.decode(value, { stream: true });
+            const lines = chunk.split('\n');
+
+            for (const line of lines) {
+              if (line.startsWith('data: ')) {
+                const data = line.substring(6);
+                if (data === '[DONE]') continue;
+                
+                try {
+                  const parsed = JSON.parse(data);
+                  const content = parsed.choices?.[0]?.delta?.content;
+                  if (content) {
+                    fullContent += content;
+                    controller.enqueue(
+                      new TextEncoder().encode(JSON.stringify({ type: 'content', content }) + '\n')
+                    );
+                  }
+                } catch (e) {
+                  // 忽略解析错误
+                }
+              }
+            }
+          }
+
+          // 发送完成信号
+          controller.enqueue(
+            new TextEncoder().encode(JSON.stringify({ type: 'complete', content: fullContent }) + '\n')
+          );
 
           controller.close();
         } catch (error) {
@@ -279,7 +270,7 @@ export default async function handler(request) {
   } catch (error) {
     console.error('Handler error:', error);
     return new Response(
-      JSON.stringify({ error: '宇宙信号波动，请重新测算' }),
+      JSON.stringify({ error: '后端报错' }),
       { 
         status: 500, 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
