@@ -968,13 +968,6 @@
                         // 发送请求（使用 Edge Runtime API，支持流式传输）
                         const requestData = { year, month, day };
                         
-                        // 创建 AbortController 用于超时控制
-                        const controller = new AbortController();
-                        const timeoutId = setTimeout(() => {
-                            controller.abort();
-                            console.log('请求超时，已中止');
-                        }, 60000); // 60 秒超时
-                        
                         // 使用相对路径，确保在任何环境下都能正确访问
                         const apiUrl = '/api/report';
                         console.log('正在请求 API:', apiUrl);
@@ -987,8 +980,7 @@
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify(requestData),
-                            signal: controller.signal
+                            body: JSON.stringify(requestData)
                         })
                         .then(async response => {
                             console.log('API 响应状态:', response.status);
@@ -1054,15 +1046,9 @@
                             } catch (streamError) {
                                 console.error('流式读取错误:', streamError);
                                 throw streamError;
-                            } finally {
-                                // 清除超时定时器
-                                clearTimeout(timeoutId);
                             }
                         })
                         .catch(error => {
-                            // 清除超时定时器
-                            clearTimeout(timeoutId);
-                            
                             console.error('请求错误:', error);
                             console.error('错误名称:', error.name);
                             console.error('错误消息:', error.message);
