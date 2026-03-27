@@ -865,11 +865,21 @@
                 
                 // 每2秒切换一次文案（0-2秒、2-4秒、4-6秒）
                 messageInterval = setInterval(() => {
+                    const currentElement = document.getElementById('progressText');
+                    if (!currentElement) {
+                        console.warn('progressText 元素已不存在，停止文字轮播');
+                        clearInterval(messageInterval);
+                        messageInterval = null;
+                        return;
+                    }
                     messageIndex = (messageIndex + 1) % loadingMessages.length;
-                    textElement.style.opacity = '0';
+                    currentElement.style.opacity = '0';
                     setTimeout(() => {
-                        textElement.textContent = loadingMessages[messageIndex];
-                        textElement.style.opacity = '1';
+                        const timeoutElement = document.getElementById('progressText');
+                        if (timeoutElement) {
+                            timeoutElement.textContent = loadingMessages[messageIndex];
+                            timeoutElement.style.opacity = '1';
+                        }
                     }, 300);
                 }, 2000);
             }
