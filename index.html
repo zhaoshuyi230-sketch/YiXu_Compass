@@ -997,6 +997,111 @@
                         let kinName = '';
                         let kinNumber = 0;
                         
+                        // 准备显示激活码验证界面，但不显示，只创建元素
+                        const activationOverlay = document.createElement('div');
+                        activationOverlay.className = 'activation-overlay';
+                        activationOverlay.id = 'activationOverlay';
+                        activationOverlay.style.cssText = `
+                            position: fixed;
+                            top: 0;
+                            left: 0;
+                            width: 100%;
+                            height: 100%;
+                            background: rgba(0, 0, 0, 0.9);
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            z-index: 1000;
+                            padding: 20px;
+                        `;
+                        
+                        // 创建内容容器
+                        const contentContainer = document.createElement('div');
+                        contentContainer.style.cssText = `
+                            background: rgba(10, 10, 10, 0.8);
+                            border: 1px solid #333;
+                            border-radius: 12px;
+                            padding: 30px;
+                            margin: 0 auto;
+                            max-width: 800px;
+                            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+                            max-height: 80vh;
+                            overflow-y: auto;
+                        `;
+                        
+                        // 创建报告内容容器
+                        const reportContent = document.createElement('div');
+                        reportContent.id = 'reportContent';
+                        reportContent.style.cssText = `
+                            color: #fff;
+                            line-height: 1.6;
+                            font-family: 'Arial', sans-serif;
+                        `;
+                        
+                        // 添加到内容容器
+                        contentContainer.appendChild(reportContent);
+                        
+                        // 创建激活码输入区域
+                        const activationCodeContainer = document.createElement('div');
+                        activationCodeContainer.style.cssText = `
+                            margin-top: 20px;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                        `;
+                        
+                        const activationCodeInput = document.createElement('input');
+                        activationCodeInput.type = 'text';
+                        activationCodeInput.placeholder = '请输入激活码 (例如: YX-001)';
+                        activationCodeInput.style.cssText = `
+                            padding: 12px 16px;
+                            font-size: 16px;
+                            border: 2px solid #333;
+                            border-radius: 8px;
+                            background: #222;
+                            color: #fff;
+                            width: 100%;
+                            max-width: 300px;
+                            margin-bottom: 10px;
+                        `;
+                        
+                        const activationCodeButton = document.createElement('button');
+                        activationCodeButton.textContent = '解锁报告';
+                        activationCodeButton.style.cssText = `
+                            padding: 12px 24px;
+                            font-size: 16px;
+                            font-weight: bold;
+                            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+                            color: white;
+                            border: none;
+                            border-radius: 8px;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
+                        `;
+                        
+                        // 添加事件监听器
+                        activationCodeButton.addEventListener('click', function() {
+                            const code = activationCodeInput.value.trim();
+                            if (code === 'YX-001' || code === 'YX-002' || code === 'YX-003') {
+                                // 隐藏激活码输入区域，显示完整报告
+                                activationCodeContainer.style.display = 'none';
+                                reportContent.innerHTML = marked.parse(fullContent);
+                            } else {
+                                alert('激活码错误，请重新输入');
+                            }
+                        });
+                        
+                        // 添加到激活码输入区域
+                        activationCodeContainer.appendChild(activationCodeInput);
+                        activationCodeContainer.appendChild(activationCodeButton);
+                        
+                        // 添加到内容容器
+                        contentContainer.appendChild(activationCodeContainer);
+                        
+                        // 添加到激活码验证界面
+                        activationOverlay.appendChild(contentContainer);
+                        
                         try {
                             console.log('开始接收流式数据...');
                             while (true) {
@@ -1021,15 +1126,21 @@
                                         } else if (data.type === 'content') {
                                             fullContent += data.content;
                                             console.log('接收到内容块，当前总长度:', fullContent.length);
+                                            // 实时更新报告内容
+                                            reportContent.innerHTML = marked.parse(fullContent);
                                             // 实时更新进度文字
                                             updateLoadingText();
                                         } else if (data.type === 'complete') {
                                             fullContent = data.content || fullContent;
                                             console.log('报告生成完成，最终长度:', fullContent.length);
+                                            // 更新最终报告内容
+                                            reportContent.innerHTML = marked.parse(fullContent);
                                         } else if (data.type === 'error') {
                                             console.error('API 错误:', data.message);
                                             if (data.fallback) {
                                                 fullContent = data.fallback;
+                                                // 更新报告内容为保底内容
+                                                reportContent.innerHTML = marked.parse(fullContent);
                                             }
                                         }
                                     } catch (e) {
@@ -1051,7 +1162,7 @@
                             document.getElementById('submitBtn').disabled = false;
                             
                             // 显示激活码验证界面
-                            showActivationOverlay(fullContent);
+                            document.body.appendChild(activationOverlay);
                             
                         } catch (streamError) {
                             console.error('流式读取错误:', streamError);
