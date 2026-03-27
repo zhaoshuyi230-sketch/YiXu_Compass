@@ -12,3 +12,4 @@ build/
 # 忽略生成的报告文件，但保留 index.html
 KIN_*.html
 *.log
+.vercel

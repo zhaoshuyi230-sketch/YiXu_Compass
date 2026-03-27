@@ -1,13 +1,5 @@
 {
   "version": 2,
-  "functions": {
-    "api/report.js": {
-      "runtime": "edge"
-    },
-    "api/test.js": {
-      "runtime": "edge"
-    }
-  },
   "builds": [
     {
       "src": "app.py",
@@ -20,8 +12,14 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1.js"
+      "src": "/api/report",
+      "dest": "api/report.js",
+      "methods": ["POST", "OPTIONS"]
+    },
+    {
+      "src": "/api/test",
+      "dest": "api/test.js",
+      "methods": ["POST", "OPTIONS"]
     },
     {
       "src": "/test.html",
