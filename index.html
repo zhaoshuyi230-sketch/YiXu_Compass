@@ -884,110 +884,141 @@
                     e.preventDefault();
                     console.log('表单提交事件触发！');
                     
-                    const year = document.getElementById('year').value;
-                    const month = document.getElementById('month').value;
-                    const day = document.getElementById('day').value;
-                    
-                    console.log('选择的日期:', year, month, day);
-                    
-                    if (!year || !month || !day) {
-                        alert('请选择完整的日期');
-                        return;
-                    }
-                    
-                    // 检查必要的元素是否存在
-                    console.log('检查元素是否存在:');
-                    console.log('loadingOverlay:', document.getElementById('loadingOverlay'));
-                    console.log('submitBtn:', document.getElementById('submitBtn'));
-                    console.log('activationOverlay:', document.getElementById('activationOverlay'));
-                    console.log('marked:', typeof marked !== 'undefined' ? '存在' : '不存在');
-                    
-                    if (typeof marked === 'undefined') {
-                        alert('页面加载失败，请刷新页面重试');
-                        return;
-                    }
-                    
-                    // 显示 Loading 动画
-                    document.getElementById('loadingOverlay').classList.add('active');
-                    document.getElementById('submitBtn').disabled = true;
-                    
-                    // 启动粒子效果
-                    startParticles();
-                    
-                    // 启动文字轮播
-                    startTextRotation();
-                    
-                    // 发送请求（使用 Edge Runtime API，支持流式传输）
-                    const requestData = { year, month, day };
-                    
-                    // 创建 AbortController 用于超时控制
-                    const controller = new AbortController();
-                    const timeoutId = setTimeout(() => {
-                        controller.abort();
-                        console.log('请求超时，已中止');
-                    }, 60000); // 60 秒超时
-                    
-                    // 使用相对路径，确保在任何环境下都能正确访问
-                    const apiUrl = '/api/report';
-                    console.log('正在请求 API:', apiUrl);
-                    console.log('请求数据:', requestData);
-                    
-                    // 尝试 Edge Runtime API
-                    fetch(apiUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(requestData),
-                        signal: controller.signal
-                    })
-                    .then(async response => {
-                        console.log('API 响应状态:', response.status);
-                        if (!response.ok) {
-                            const errorText = await response.text();
-                            console.error('API 错误响应:', errorText);
-                            throw new Error(`网络响应异常: ${response.status} - ${errorText}`);
+                    try {
+                        const year = document.getElementById('year').value;
+                        const month = document.getElementById('month').value;
+                        const day = document.getElementById('day').value;
+                        
+                        console.log('选择的日期:', year, month, day);
+                        
+                        if (!year || !month || !day) {
+                            alert('请选择完整的日期');
+                            return;
                         }
                         
-                        const reader = response.body.getReader();
-                        const decoder = new TextDecoder();
-                        let fullContent = '';
-                        let kinName = '';
-                        let kinNumber = 0;
+                        // 检查必要的元素是否存在
+                        console.log('检查元素是否存在:');
+                        console.log('loadingOverlay:', document.getElementById('loadingOverlay'));
+                        console.log('submitBtn:', document.getElementById('submitBtn'));
+                        console.log('activationOverlay:', document.getElementById('activationOverlay'));
+                        console.log('marked:', typeof marked !== 'undefined' ? '存在' : '不存在');
                         
-                        try {
-                            while (true) {
-                                const { done, value } = await reader.read();
-                                if (done) break;
-                                
-                                const chunk = decoder.decode(value, { stream: true });
-                                const lines = chunk.split('\n').filter(line => line.trim());
-                                
-                                for (const line of lines) {
-                                    try {
-                                        const data = JSON.parse(line);
-                                        
-                                        if (data.type === 'start') {
-                                            kinName = data.kin_name;
-                                            kinNumber = data.kin_number;
-                                            console.log('开始生成报告:', kinName, kinNumber);
-                                        } else if (data.type === 'content') {
-                                            fullContent += data.content;
-                                            // 实时更新进度文字
-                                            updateLoadingText();
-                                        } else if (data.type === 'complete') {
-                                            fullContent = data.content || fullContent;
-                                        } else if (data.type === 'error') {
-                                            console.error('API 错误:', data.message);
-                                            if (data.fallback) {
-                                                fullContent = data.fallback;
+                        if (typeof marked === 'undefined') {
+                            alert('页面加载失败，请刷新页面重试');
+                            return;
+                        }
+                        
+                        // 显示 Loading 动画
+                        document.getElementById('loadingOverlay').classList.add('active');
+                        document.getElementById('submitBtn').disabled = true;
+                        
+                        // 启动粒子效果
+                        startParticles();
+                        
+                        // 启动文字轮播
+                        startTextRotation();
+                        
+                        // 发送请求（使用 Edge Runtime API，支持流式传输）
+                        const requestData = { year, month, day };
+                        
+                        // 创建 AbortController 用于超时控制
+                        const controller = new AbortController();
+                        const timeoutId = setTimeout(() => {
+                            controller.abort();
+                            console.log('请求超时，已中止');
+                        }, 60000); // 60 秒超时
+                        
+                        // 使用相对路径，确保在任何环境下都能正确访问
+                        const apiUrl = '/api/report';
+                        console.log('正在请求 API:', apiUrl);
+                        console.log('请求数据:', requestData);
+                        
+                        // 尝试 Edge Runtime API
+                        fetch(apiUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(requestData),
+                            signal: controller.signal
+                        })
+                        .then(async response => {
+                            console.log('API 响应状态:', response.status);
+                            if (!response.ok) {
+                                const errorText = await response.text();
+                                console.error('API 错误响应:', errorText);
+                                throw new Error(`网络响应异常: ${response.status} - ${errorText}`);
+                            }
+                            
+                            const reader = response.body.getReader();
+                            const decoder = new TextDecoder();
+                            let fullContent = '';
+                            let kinName = '';
+                            let kinNumber = 0;
+                            
+                            try {
+                                while (true) {
+                                    const { done, value } = await reader.read();
+                                    if (done) break;
+                                    
+                                    const chunk = decoder.decode(value, { stream: true });
+                                    const lines = chunk.split('\n').filter(line => line.trim());
+                                    
+                                    for (const line of lines) {
+                                        try {
+                                            const data = JSON.parse(line);
+                                            
+                                            if (data.type === 'start') {
+                                                kinName = data.kin_name;
+                                                kinNumber = data.kin_number;
+                                                console.log('开始生成报告:', kinName, kinNumber);
+                                            } else if (data.type === 'content') {
+                                                fullContent += data.content;
+                                                // 实时更新进度文字
+                                                updateLoadingText();
+                                            } else if (data.type === 'complete') {
+                                                fullContent = data.content || fullContent;
+                                            } else if (data.type === 'error') {
+                                                console.error('API 错误:', data.message);
+                                                if (data.fallback) {
+                                                    fullContent = data.fallback;
+                                                }
                                             }
+                                        } catch (e) {
+                                            console.error('解析数据失败:', e, line);
                                         }
-                                    } catch (e) {
-                                        console.error('解析数据失败:', e, line);
                                     }
                                 }
+                                
+                                // 停止粒子效果
+                                stopParticles();
+                                
+                                // 停止文字轮播
+                                stopTextRotation();
+                                
+                                // 隐藏 Loading 动画
+                                document.getElementById('loadingOverlay').classList.remove('active');
+                                document.getElementById('submitBtn').disabled = false;
+                                
+                                // 显示激活码验证界面
+                                showActivationOverlay(fullContent);
+                                
+                            } catch (streamError) {
+                                console.error('流式读取错误:', streamError);
+                                throw streamError;
+                            } finally {
+                                // 清除超时定时器
+                                clearTimeout(timeoutId);
                             }
+                        })
+                        .catch(error => {
+                            // 清除超时定时器
+                            clearTimeout(timeoutId);
+                            
+                            console.error('请求错误:', error);
+                            console.error('错误名称:', error.name);
+                            console.error('错误消息:', error.message);
+                            console.error('错误堆栈:', error.stack);
                             
                             // 停止粒子效果
                             stopParticles();
@@ -999,62 +1030,36 @@
                             document.getElementById('loadingOverlay').classList.remove('active');
                             document.getElementById('submitBtn').disabled = false;
                             
-                            // 显示激活码验证界面
-                            showActivationOverlay(fullContent);
+                            // 显示详细错误提示
+                            let errorMsg = '宇宙信号波动，请重新测算\n\n';
+                            if (error.name === 'AbortError') {
+                                errorMsg = '请求超时，请检查网络后重试';
+                            } else if (error.message && error.message.includes('Failed to fetch')) {
+                                errorMsg = '网络连接失败，请检查网络设置\n\n可能原因：\n1. 网络不稳定\n2. 服务器暂时不可用\n3. 需要刷新页面重试';
+                            } else if (error.message) {
+                                errorMsg += '错误详情: ' + error.message;
+                            }
                             
-                        } catch (streamError) {
-                            console.error('流式读取错误:', streamError);
-                            throw streamError;
-                        } finally {
-                            // 清除超时定时器
-                            clearTimeout(timeoutId);
+                            alert(errorMsg);
+                        });
+                        
+                        // 更新加载文字的函数
+                        function updateLoadingText() {
+                            const progressTexts = [
+                                '正在接入玛雅 KIN 能量场...',
+                                '正在解码你的商业基因序列...',
+                                'AI 导师正在为你拨动财富指针...',
+                                '正在匹配最佳搞钱路径...'
+                            ];
+                            const loadingText = document.getElementById('progressText');
+                            if (loadingText) {
+                                const randomIndex = Math.floor(Math.random() * progressTexts.length);
+                                loadingText.textContent = progressTexts[randomIndex];
+                            }
                         }
-                    })
-                    .catch(error => {
-                        // 清除超时定时器
-                        clearTimeout(timeoutId);
-                        
-                        console.error('请求错误:', error);
-                        console.error('错误名称:', error.name);
-                        console.error('错误消息:', error.message);
-                        console.error('错误堆栈:', error.stack);
-                        
-                        // 停止粒子效果
-                        stopParticles();
-                        
-                        // 停止文字轮播
-                        stopTextRotation();
-                        
-                        // 隐藏 Loading 动画
-                        document.getElementById('loadingOverlay').classList.remove('active');
-                        document.getElementById('submitBtn').disabled = false;
-                        
-                        // 显示详细错误提示
-                        let errorMsg = '宇宙信号波动，请重新测算\n\n';
-                        if (error.name === 'AbortError') {
-                            errorMsg = '请求超时，请检查网络后重试';
-                        } else if (error.message && error.message.includes('Failed to fetch')) {
-                            errorMsg = '网络连接失败，请检查网络设置\n\n可能原因：\n1. 网络不稳定\n2. 服务器暂时不可用\n3. 需要刷新页面重试';
-                        } else if (error.message) {
-                            errorMsg += '错误详情: ' + error.message;
-                        }
-                        
-                        alert(errorMsg);
-                    });
-                    
-                    // 更新加载文字的函数
-                    function updateLoadingText() {
-                        const progressTexts = [
-                            '正在接入玛雅 KIN 能量场...',
-                            '正在解码你的商业基因序列...',
-                            'AI 导师正在为你拨动财富指针...',
-                            '正在匹配最佳搞钱路径...'
-                        ];
-                        const loadingText = document.getElementById('progressText');
-                        if (loadingText) {
-                            const randomIndex = Math.floor(Math.random() * progressTexts.length);
-                            loadingText.textContent = progressTexts[randomIndex];
-                        }
+                    } catch (error) {
+                        console.error('前端执行错误:', error);
+                        alert('前端执行错误: ' + error.message);
                     }
                 });
             } else {
