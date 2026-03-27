@@ -1,26 +1,6 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "app.py",
-      "use": "@vercel/python",
-      "config": { 
-        "pythonVersion": "3.11",
-        "includeFiles": ["index.html", "test.html", "simple_test.html", "*.jpg", "*.png", "*.jpeg"] 
-      }
-    }
-  ],
   "routes": [
-    {
-      "src": "/api/report",
-      "dest": "api/report.js",
-      "methods": ["POST", "OPTIONS"]
-    },
-    {
-      "src": "/api/test",
-      "dest": "api/test.js",
-      "methods": ["POST", "OPTIONS"]
-    },
     {
       "src": "/test.html",
       "dest": "test.html"
@@ -30,20 +10,8 @@
       "dest": "simple_test.html"
     },
     {
-      "src": "/",
-      "dest": "app.py"
-    },
-    {
-      "src": "/generate_report",
-      "dest": "app.py"
-    },
-    {
-      "src": "/stream_report",
-      "dest": "app.py"
-    },
-    {
       "src": "/(.*\\.(jpg|jpeg|png|gif|webp))",
-      "dest": "app.py"
+      "dest": "$1"
     }
   ]
 }
