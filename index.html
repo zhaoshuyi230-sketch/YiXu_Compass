@@ -855,7 +855,7 @@
             let messageInterval;
             
             function startTextRotation() {
-                const textElement = document.getElementById('loadingText');
+                const textElement = document.getElementById('progressText');
                 messageIndex = 0;
                 textElement.textContent = loadingMessages[messageIndex];
                 
@@ -1050,7 +1050,7 @@
                             'AI 导师正在为你拨动财富指针...',
                             '正在匹配最佳搞钱路径...'
                         ];
-                        const loadingText = document.getElementById('loadingText');
+                        const loadingText = document.getElementById('progressText');
                         if (loadingText) {
                             const randomIndex = Math.floor(Math.random() * progressTexts.length);
                             loadingText.textContent = progressTexts[randomIndex];
