@@ -1,11 +1,20 @@
 {
-  "name": "yixu-compass",
+  "name": "maya-compass",
   "version": "1.0.0",
-  "description": "艺序·商业潜能解码器",
+  "description": "玛雅商业潜能解码器",
+  "main": "index.html",
   "scripts": {
-    "start": "python3 app.py"
+    "deploy": "vercel --prod"
   },
   "engines": {
-    "node": "18.x"
-  }
+    "node": "24.x"
+  },
+  "keywords": [
+    "maya",
+    "compass",
+    "business",
+    "potential"
+  ],
+  "author": "",
+  "license": "MIT"
 }
