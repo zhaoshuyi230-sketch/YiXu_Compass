@@ -508,7 +508,7 @@
 <body>
     <div class="container">
         <h1>艺序·商业潜能解码器</h1>
-        <form id="reportForm" onSubmit="e.preventDefault(); return false;">
+        <div id="reportForm">
             <div class="date-selector">
                 <div class="select-group">
                     <label for="year">年</label>
@@ -541,8 +541,8 @@
                     </select>
                 </div>
             </div>
-            <button type="button" class="submit-button" id="submitBtn">开启解码器</button>
-        </form>
+            <button id="submitBtn" class="submit-button">开启解码器</button>
+        </div>
     </div>
     
     <!-- Loading 动画 -->
