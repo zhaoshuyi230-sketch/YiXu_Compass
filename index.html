@@ -888,7 +888,12 @@
                 console.log('请求超时，已中止');
             }, 60000); // 60 秒超时
             
-            fetch('/api/report', {
+            // 检测 API 路径（支持相对路径和绝对路径）
+            const apiUrl = window.location.origin + '/api/report';
+            console.log('正在请求 API:', apiUrl);
+            
+            // 尝试 Edge Runtime API
+            fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -897,8 +902,11 @@
                 signal: controller.signal
             })
             .then(async response => {
+                console.log('API 响应状态:', response.status);
                 if (!response.ok) {
-                    throw new Error('网络响应异常');
+                    const errorText = await response.text();
+                    console.error('API 错误响应:', errorText);
+                    throw new Error(`网络响应异常: ${response.status}`);
                 }
                 
                 const reader = response.body.getReader();
@@ -978,8 +986,14 @@
                 document.getElementById('loadingOverlay').classList.remove('active');
                 document.getElementById('submitBtn').disabled = false;
                 
-                // 显示友好错误提示
-                alert('宇宙信号波动，请重新测算');
+                // 显示详细错误提示
+                let errorMsg = '宇宙信号波动，请重新测算';
+                if (error.name === 'AbortError') {
+                    errorMsg = '请求超时，请检查网络后重试';
+                } else if (error.message && error.message.includes('Failed to fetch')) {
+                    errorMsg = '网络连接失败，请检查网络设置';
+                }
+                alert(errorMsg);
             });
             
             // 更新加载文字的函数
