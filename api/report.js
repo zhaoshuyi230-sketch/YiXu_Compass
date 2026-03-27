@@ -165,7 +165,7 @@ export default async function handler(request) {
       );
     }
 
-    // 创建流式响应
+    // 创建流式响应（测试版本 - Mock Stream）
     const stream = new ReadableStream({
       async start(controller) {
         try {
@@ -180,66 +180,34 @@ export default async function handler(request) {
             )
           );
 
-          // 调用大模型 API
-          const systemPrompt = generateSystemPrompt(kinName, kinNumber);
-          const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${apiKey}`
-            },
-            body: JSON.stringify({
-              model: 'deepseek-chat',
-              messages: [
-                { role: 'system', content: systemPrompt },
-                { role: 'user', content: `请为玛雅印记【${kinName}】生成专属的《个人商业出厂说明书》。` }
-              ],
-              stream: true,
-              temperature: 0.8,
-              max_tokens: 4000
-            })
-          });
+          // 模拟流式输出（Mock Stream）- 用于测试前后端流式通道
+          const mockMessages = [
+            '【系统测试】',
+            '这是一段',
+            '假的流式',
+            '测试数据！',
+            '如果前端能看到这段文字，',
+            '说明前后端流式通道通畅！',
+            '接下来我会恢复真实的大模型调用...'
+          ];
 
-          if (!response.ok) {
-            throw new Error(`API 请求失败: ${response.status}`);
-          }
-
-          // 处理流式响应
-          const reader = response.body.getReader();
-          const decoder = new TextDecoder();
-          let fullContent = '';
-
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-
-            const chunk = decoder.decode(value, { stream: true });
-            const lines = chunk.split('\n');
-
-            for (const line of lines) {
-              if (line.startsWith('data: ')) {
-                const data = line.substring(6);
-                if (data === '[DONE]') continue;
-                
-                try {
-                  const parsed = JSON.parse(data);
-                  const content = parsed.choices?.[0]?.delta?.content;
-                  if (content) {
-                    fullContent += content;
-                    controller.enqueue(
-                      new TextEncoder().encode(JSON.stringify({ type: 'content', content }) + '\n')
-                    );
-                  }
-                } catch (e) {
-                  // 忽略解析错误
-                }
-              }
-            }
+          for (const message of mockMessages) {
+            // 模拟网络延迟，每隔 500 毫秒发送一段文字
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            controller.enqueue(
+              new TextEncoder().encode(JSON.stringify({ type: 'content', content: message + ' ' }) + '\n')
+            );
           }
 
           // 发送完成信号
           controller.enqueue(
-            new TextEncoder().encode(JSON.stringify({ type: 'complete', content: fullContent }) + '\n')
+            new TextEncoder().encode(
+              JSON.stringify({ 
+                type: 'complete', 
+                content: mockMessages.join(' ') 
+              }) + '\n'
+            )
           );
 
           controller.close();
