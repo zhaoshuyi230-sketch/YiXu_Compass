@@ -20,6 +20,10 @@
       "dest": "app.py"
     },
     {
+      "src": "/stream_report",
+      "dest": "app.py"
+    },
+    {
       "src": "/(.*\\.(jpg|jpeg|png|gif|webp))",
       "dest": "app.py"
     }

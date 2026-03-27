@@ -795,7 +795,18 @@
             })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('网络响应异常');
+                    // 如果流式接口失败，降级到普通接口
+                    console.log('流式接口失败，降级到普通接口');
+                    return fetch('/generate_report', {
+                        method: 'POST',
+                        body: formData
+                    }).then(resp => {
+                        if (!resp.ok) throw new Error('网络响应异常');
+                        return resp.text();
+                    }).then(markdown => {
+                        finishReport(markdown);
+                        return null; // 表示已处理
+                    });
                 }
                 
                 // 处理流式响应
