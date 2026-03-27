@@ -27,6 +27,9 @@ def serve_static(filename):
             return send_file(file_path)
         except Exception as e:
             return f"Error serving file: {str(e)}", 404
+    # 不处理 API 路径，让 Vercel 处理
+    if filename.startswith('api/'):
+        return "Not Found", 404
     return "Not Found", 404
 
 @app.route('/generate_report', methods=['POST'])

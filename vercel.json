@@ -11,11 +11,15 @@
       "use": "@vercel/python",
       "config": { 
         "pythonVersion": "3.11",
-        "includeFiles": ["index.html", "*.jpg", "*.png", "*.jpeg"] 
+        "includeFiles": ["index.html", "test.html", "*.jpg", "*.png", "*.jpeg"] 
       }
     }
   ],
   "routes": [
+    {
+      "src": "/test.html",
+      "dest": "test.html"
+    },
     {
       "src": "/",
       "dest": "app.py"
